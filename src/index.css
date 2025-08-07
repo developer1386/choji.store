@@ -3,6 +3,11 @@
  * This file is the main entry point for all styles in the application
  */
 
-@tailwind base;    /* Reset and base styles */
-@tailwind components;    /* Component classes */
-@tailwind utilities;    /* Utility classes */
+/* Reset and base styles */
+@tailwind base;
+
+/* Component classes */
+@tailwind components;
+
+/* Utility classes */
+@tailwind utilities;
