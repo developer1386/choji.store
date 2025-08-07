@@ -1,20 +1,41 @@
+/**
+ * Main application component for the Choji Cat Food Store
+ * A single-page e-commerce application for premium homemade cat food
+ * Features include product showcase, quantity selection, and WhatsApp integration for orders
+ */
+
 import React, { useState } from 'react';
 import { Heart, Leaf, Shield, ChefHat, Phone, MessageCircle, Cat, ArrowDown } from 'lucide-react';
 
 function App() {
-  const [selectedQuantity, setSelectedQuantity] = useState('250g');
-  const [whatsappNumber, setWhatsappNumber] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // State for managing order form
+  const [selectedQuantity, setSelectedQuantity] = useState('250g');  // Track selected product quantity
+  const [whatsappNumber, setWhatsappNumber] = useState('');         // Store customer's WhatsApp number
+  const [isLoading, setIsLoading] = useState(false);                // Loading state for form submission
 
+  /**
+   * Smoothly scrolls the page to the order form section
+   * Used by various CTA buttons throughout the page
+   */
   const scrollToOrder = () => {
     document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  /**
+   * Validates the provided phone number
+   * @param number - The phone number to validate
+   * @returns boolean - True if number is valid (10-15 digits), false otherwise
+   */
   const validatePhoneNumber = (number: string) => {
-    const cleanNumber = number.replace(/\D/g, '');
+    const cleanNumber = number.replace(/\D/g, ''); // Remove all non-digit characters
     return cleanNumber.length >= 10 && cleanNumber.length <= 15;
   };
 
+  /**
+   * Handles the order form submission
+   * Validates phone number, constructs WhatsApp message, and opens WhatsApp chat
+   * @param e - Form submission event
+   */
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -45,7 +66,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-green-50">
-      {/* Navigation */}
+      {/* Navigation Bar
+       * Fixed position header with brand logo and CTA button
+       * Features:
+       * - Blurred background effect
+       * - Responsive layout
+       * - Smooth scroll to order form
+       */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -61,7 +88,12 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Main landing area
+       * Features:
+       * - Large, attention-grabbing headline
+       * - Brand value proposition
+       * - Primary and secondary CTAs
+       */}
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
@@ -88,7 +120,13 @@ function App() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section 
+       * Brand story and value proposition
+       * Features:
+       * - Two-column layout on desktop
+       * - Gradient background illustration
+       * - Responsive text layout
+       */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -116,7 +154,13 @@ function App() {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* Benefits Section
+       * Product features and unique selling points
+       * Features:
+       * - Card-based layout with icons
+       * - Hover animations
+       * - Responsive grid system (1 column mobile, 2 tablet, 4 desktop)
+       */}
       <section className="py-16 px-4 bg-gradient-to-r from-orange-50 to-green-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -156,7 +200,14 @@ function App() {
         </div>
       </section>
 
-      {/* Product Section */}
+      {/* Product Section
+       * Available product quantities and pricing options
+       * Features:
+       * - Three-tier product selection
+       * - Highlighted popular choice
+       * - Responsive grid layout
+       * - Hover effects and transitions
+       */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -199,7 +250,15 @@ function App() {
         </div>
       </section>
 
-      {/* Order Form */}
+      {/* Order Form Section
+       * Main conversion point with WhatsApp integration
+       * Features:
+       * - Quantity selection with visual feedback
+       * - Phone number validation
+       * - Loading states
+       * - WhatsApp deep linking
+       * - Form validation and error handling
+       */}
       <section id="order-form" className="py-16 px-4 bg-gradient-to-br from-orange-50 to-green-50">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
@@ -311,7 +370,15 @@ function App() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer Section
+       * Site footer with branding and contact information
+       * Features:
+       * - Responsive three-column layout
+       * - Brand information
+       * - Contact details
+       * - Secondary CTA
+       * - Copyright notice
+       */}
       <footer className="bg-gray-800 text-white py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">

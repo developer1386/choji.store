@@ -1,3 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Global styles for Choji Cat Food Store
+ * Imports Tailwind CSS base styles, components, and utilities
+ * This file is the main entry point for all styles in the application
+ */
+
+@tailwind base;    /* Reset and base styles */
+@tailwind components;    /* Component classes */
+@tailwind utilities;    /* Utility classes */

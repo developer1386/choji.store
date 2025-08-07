@@ -4,10 +4,10 @@
 This is a React + TypeScript e-commerce landing page for premium homemade cat food, built with Vite and styled with Tailwind CSS. The site features a simple, single-page design with WhatsApp integration for order placement.
 
 ## Key Technologies
-- React 18 with TypeScript
-- Vite for build tooling
-- Tailwind CSS for styling
-- Lucide React for icons
+- React 18.3.1 with TypeScript 5.5.3
+- Vite 7.1.0 for build tooling
+- Tailwind CSS 3.4.1 for styling
+- Lucide React 0.344.0 for icons
 
 ## Project Structure
 ```
@@ -91,7 +91,7 @@ npm run dev    # Start development server
 - Messages are URL-encoded for proper WhatsApp deep linking
 
 ### TypeScript Configuration
-- Strict TypeScript configuration with enhanced type checking:
+- Advanced TypeScript 5.5.3 configuration with enhanced type checking:
   ```json
   {
     "strict": true,
