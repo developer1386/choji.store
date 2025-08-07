@@ -4,21 +4,43 @@ import { Heart, Leaf, Shield, ChefHat, Phone, MessageCircle, Cat, ArrowDown } fr
 function App() {
   const [selectedQuantity, setSelectedQuantity] = useState('250g');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const scrollToOrder = () => {
     document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const validatePhoneNumber = (number: string) => {
+    const cleanNumber = number.replace(/\D/g, '');
+    return cleanNumber.length >= 10 && cleanNumber.length <= 15;
+  };
+
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
     if (!whatsappNumber) {
       alert('Please enter your WhatsApp number');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePhoneNumber(whatsappNumber)) {
+      alert('Please enter a valid phone number (10-15 digits)');
+      setIsLoading(false);
       return;
     }
     
     const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
     const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    
+    try {
+      window.open(whatsappUrl, '_blank');
+    } catch (error) {
+      alert('Failed to open WhatsApp. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -237,18 +259,50 @@ function App() {
                 type="tel"
                 id="whatsapp"
                 value={whatsappNumber}
-                onChange={(e) => setWhatsappNumber(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Only allow digits, +, and spaces
+                  const cleaned = value.replace(/[^\d\s+]/g, '');
+                  // Limit to 15 characters
+                  const truncated = cleaned.slice(0, 15);
+                  setWhatsappNumber(truncated);
+                }}
                 placeholder="e.g., +1234567890"
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none text-lg"
+                className={`w-full p-4 border-2 rounded-xl focus:outline-none text-lg transition-colors ${
+                  whatsappNumber && !validatePhoneNumber(whatsappNumber)
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-200 focus:border-orange-500'
+                }`}
                 required
+                pattern="[+\d\s]{10,15}"
+                title="Please enter a valid phone number with 10-15 digits"
               />
+              {whatsappNumber && !validatePhoneNumber(whatsappNumber) && (
+                <p className="mt-2 text-sm text-red-600">
+                  Please enter a valid phone number (10-15 digits)
+                </p>
+              )}
             </div>
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white py-4 px-8 rounded-xl font-semibold text-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+              disabled={isLoading}
+              className={`w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white py-4 px-8 rounded-xl font-semibold text-lg transition-all ${
+                !isLoading && 'hover:scale-[1.02]'
+              } flex items-center justify-center gap-2 ${
+                isLoading && 'opacity-75 cursor-not-allowed'
+              }`}
             >
-              <MessageCircle className="w-6 h-6" />
-              Place Order via WhatsApp
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <MessageCircle className="w-6 h-6" />
+                  Place Order via WhatsApp
+                </>
+              )}
             </button>
             <p className="text-sm text-gray-500 text-center mt-4">
               We'll contact you via WhatsApp to confirm your order and arrange delivery
