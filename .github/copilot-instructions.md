@@ -38,20 +38,76 @@ npm run dev    # Start development server
 - State is contained within the `App.tsx` component
 
 ### Styling
-- Tailwind CSS classes for all styling
-- Uses gradient backgrounds (`bg-gradient-to-b`)
-- Consistent color scheme using orange-500 as primary color
-- Mobile-first responsive design
+- Tailwind CSS classes for all styling with consistent patterns:
+  ```tsx
+  // Gradient backgrounds
+  "bg-gradient-to-b from-orange-50 to-green-50"    // Main page gradient
+  "bg-gradient-to-br from-orange-100 to-green-100" // Card gradients
+  
+  // Common button styles
+  "bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-colors"
+  
+  // Responsive layouts
+  "grid md:grid-cols-2 lg:grid-cols-4 gap-8"      // Responsive grid system
+  "flex flex-col sm:flex-row gap-4"               // Stack on mobile, row on desktop
+  
+  // Common UI elements
+  "shadow-lg hover:shadow-xl transition-shadow"    // Interactive cards
+  "w-24 h-1 bg-orange-500 mx-auto mb-8"          // Section dividers
+  ```
+- Color palette:
+  - Primary: orange-500 (buttons, highlights)
+  - Secondary: green-500 (accents)
+  - Backgrounds: white, orange-50, green-50
+  - Text: gray-800 (headings), gray-600 (body)
 
 ### Component Architecture
 - Single page application with all logic in `App.tsx`
 - Sections are organized as nested components within `App.tsx`
 - UI components use Lucide React icons
 
-### Form Handling
-- WhatsApp integration for order placement
-- Phone number validation before form submission
-- Dynamic message construction with selected quantity
+### Form Handling and WhatsApp Integration
+- WhatsApp integration implemented in `App.tsx`:
+  ```tsx
+  // Phone number validation
+  if (!whatsappNumber) {
+    alert('Please enter your WhatsApp number');
+    return;
+  }
+  
+  // Message construction
+  const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
+  
+  // WhatsApp deep linking
+  const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+  ```
+- Form state managed with React hooks:
+  ```tsx
+  const [selectedQuantity, setSelectedQuantity] = useState('250g');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
+  ```
+- Phone numbers are stripped of non-digits before URL construction
+- Messages are URL-encoded for proper WhatsApp deep linking
+
+### TypeScript Configuration
+- Strict TypeScript configuration with enhanced type checking:
+  ```json
+  {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  }
+  ```
+- Modern features enabled:
+  - Target: ES2020
+  - React JSX transform
+  - Bundler-mode module resolution
+- Split configuration:
+  - `tsconfig.json`: Root config with references
+  - `tsconfig.app.json`: App-specific settings
+  - `tsconfig.node.json`: Node.js build settings
 
 ### Constants and Configuration
 - Configuration is managed through `vite.config.ts`
@@ -64,3 +120,33 @@ npm run dev    # Start development server
 ## Testing and Quality
 - ESLint for code quality (configuration in `eslint.config.js`)
 - TypeScript for type safety
+
+## Debugging Workflows
+
+### Common Development Issues
+1. WhatsApp Integration
+   - Test with different phone number formats
+   - Check URL encoding of special characters in messages
+   - Verify WhatsApp deep link construction in browser console
+
+2. Style Issues
+   - Use browser dev tools to inspect Tailwind classes
+   - Check responsive breakpoints with browser device toolbar
+   - Verify gradient overlays and transitions
+
+3. TypeScript Errors
+   - Check component prop types
+   - Verify event handler type definitions
+   - Run `npm run lint` to catch type issues
+
+### Development Tools
+- Vite Dev Server: `npm run dev`
+  - Hot Module Replacement (HMR)
+  - Fast refresh for React components
+- Browser DevTools
+  - React DevTools for component inspection
+  - Network tab for WhatsApp API debugging
+- VS Code Extensions
+  - Tailwind CSS IntelliSense
+  - ESLint
+  - TypeScript support
