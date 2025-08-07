@@ -12,6 +12,12 @@ function App() {
   const [selectedQuantity, setSelectedQuantity] = useState('250g');  // Track selected product quantity
   const [whatsappNumber, setWhatsappNumber] = useState('');         // Store customer's WhatsApp number
   const [isLoading, setIsLoading] = useState(false);                // Loading state for form submission
+  const [isVisible, setIsVisible] = useState(false);               // Animation trigger state
+
+  // Trigger animations on component mount
+  React.useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   /**
    * Smoothly scrolls the page to the order form section
@@ -73,15 +79,17 @@ function App() {
        * - Responsive layout
        * - Smooth scroll to order form
        */}
-      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+      <nav className={`fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-700 ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+      }`}>
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Cat className="w-8 h-8 text-orange-500" />
+          <div className="flex items-center space-x-2 animate-pulse">
+            <Cat className="w-8 h-8 text-orange-500 animate-bounce" />
             <span className="text-2xl font-bold text-gray-800">choji.store</span>
           </div>
           <button
             onClick={scrollToOrder}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-colors"
+            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
           >
             Order Now
           </button>
@@ -95,25 +103,31 @@ function App() {
        * - Primary and secondary CTAs
        */}
       <section className="pt-24 pb-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+        <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 ${
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+        }`}>
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight animate-fade-in-up">
             Premium Homemade
-            <span className="text-orange-500 block">Cat Food</span>
+            <span className="text-orange-500 block animate-pulse">Cat Food</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className={`text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+          }`}>
             Made with love from fresh chicken, wholesome potatoes, and nutritious carrots. 
             Give your feline friend the natural nutrition they deserve.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-500 ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+          }`}>
             <button
               onClick={scrollToOrder}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 flex items-center gap-2"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-110 hover:shadow-xl flex items-center gap-2 animate-bounce"
             >
               Order Now
-              <ArrowDown className="w-5 h-5" />
+              <ArrowDown className="w-5 h-5 animate-bounce" />
             </button>
-            <div className="flex items-center text-gray-600">
-              <MessageCircle className="w-5 h-5 mr-2" />
+            <div className="flex items-center text-gray-600 hover:text-orange-500 transition-colors duration-300">
+              <MessageCircle className="w-5 h-5 mr-2 animate-pulse" />
               <span>WhatsApp orders available</span>
             </div>
           </div>
@@ -129,21 +143,21 @@ function App() {
        */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Meet Choji</h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8 animate-pulse"></div>
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="bg-gradient-to-br from-orange-100 to-green-100 rounded-2xl p-8 h-80 flex items-center justify-center">
-              <Cat className="w-32 h-32 text-orange-500" />
+            <div className="bg-gradient-to-br from-orange-100 to-green-100 rounded-2xl p-8 h-80 flex items-center justify-center hover:scale-105 transition-transform duration-500 hover:shadow-xl">
+              <Cat className="w-32 h-32 text-orange-500 animate-pulse hover:animate-bounce" />
             </div>
-            <div>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            <div className="animate-fade-in-right">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6 hover:text-gray-800 transition-colors duration-300">
                 Choji was a beloved family cat who inspired us to create the healthiest, 
                 most natural cat food possible. After struggling to find quality commercial 
                 options that met our high standards, we decided to make our own.
               </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-gray-700 leading-relaxed hover:text-gray-800 transition-colors duration-300">
                 Every batch is carefully prepared in small quantities using only the 
                 finest ingredients: premium chicken breast, organic potatoes, and fresh 
                 carrots. No preservatives, no fillers, no compromises—just pure, 
@@ -163,35 +177,35 @@ function App() {
        */}
       <section className="py-16 px-4 bg-gradient-to-r from-orange-50 to-green-50">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Why Choose Choji's Food?</h2>
-            <div className="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-green-500 mx-auto mb-8 animate-pulse"></div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
-              <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-orange-500" />
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 text-center hover:scale-105 hover:-translate-y-2 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+              <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-orange-200 transition-colors duration-300 hover:scale-110">
+                <Heart className="w-8 h-8 text-orange-500 hover:animate-pulse" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">Real Chicken</h3>
               <p className="text-gray-600">Premium chicken breast as the main protein source, rich in essential amino acids.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Leaf className="w-8 h-8 text-green-500" />
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 text-center hover:scale-105 hover:-translate-y-2 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-green-200 transition-colors duration-300 hover:scale-110">
+                <Leaf className="w-8 h-8 text-green-500 hover:animate-pulse" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">Fresh Veggies</h3>
               <p className="text-gray-600">Organic potatoes and carrots provide natural vitamins and fiber for healthy digestion.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-blue-500" />
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 text-center hover:scale-105 hover:-translate-y-2 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-blue-200 transition-colors duration-300 hover:scale-110">
+                <Shield className="w-8 h-8 text-blue-500 hover:animate-pulse" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">No Additives</h3>
               <p className="text-gray-600">Zero preservatives, artificial colors, or fillers. Just pure, natural ingredients.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ChefHat className="w-8 h-8 text-purple-500" />
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 text-center hover:scale-105 hover:-translate-y-2 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-purple-200 transition-colors duration-300 hover:scale-110">
+                <ChefHat className="w-8 h-8 text-purple-500 hover:animate-pulse" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">Home Cooked</h3>
               <p className="text-gray-600">Every batch is lovingly prepared in small quantities for maximum freshness.</p>
@@ -210,39 +224,39 @@ function App() {
        */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Available Quantities</h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8 animate-pulse"></div>
             <p className="text-lg text-gray-600">Choose the perfect size for your feline friend</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border-2 border-transparent hover:border-orange-200 transition-all">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border-2 border-transparent hover:border-orange-200 transition-all duration-500 hover:scale-105 hover:shadow-xl animate-fade-in-up" style={{animationDelay: '0.1s'}}>
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">250g</h3>
                 <p className="text-gray-600 mb-4">Perfect for trying out or single cats</p>
-                <div className="bg-orange-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto">
-                  <Cat className="w-6 h-6 text-white" />
+                <div className="bg-orange-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto hover:scale-110 transition-transform duration-300">
+                  <Cat className="w-6 h-6 text-white hover:animate-bounce" />
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-200 transform scale-105 relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl border-2 border-green-200 transform scale-105 relative hover:scale-110 transition-all duration-500 hover:shadow-xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold animate-pulse">
                 Most Popular
               </div>
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">500g</h3>
                 <p className="text-gray-600 mb-4">Great value for regular feeding</p>
-                <div className="bg-green-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto">
-                  <Cat className="w-6 h-6 text-white" />
+                <div className="bg-green-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto hover:scale-110 transition-transform duration-300">
+                  <Cat className="w-6 h-6 text-white hover:animate-bounce" />
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-transparent hover:border-blue-200 transition-all">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-transparent hover:border-blue-200 transition-all duration-500 hover:scale-105 hover:shadow-xl animate-fade-in-up" style={{animationDelay: '0.3s'}}>
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">1kg</h3>
                 <p className="text-gray-600 mb-4">Best value for multiple cats</p>
-                <div className="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto">
-                  <Cat className="w-6 h-6 text-white" />
+                <div className="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto hover:scale-110 transition-transform duration-300">
+                  <Cat className="w-6 h-6 text-white hover:animate-bounce" />
                 </div>
               </div>
             </div>
@@ -261,12 +275,12 @@ function App() {
        */}
       <section id="order-form" className="py-16 px-4 bg-gradient-to-br from-orange-50 to-green-50">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Place Your Order</h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8 animate-pulse"></div>
             <p className="text-lg text-gray-600">Ready to give your cat the best? Let's get started!</p>
           </div>
-          <form onSubmit={handlePlaceOrder} className="bg-white p-8 rounded-2xl shadow-lg">
+          <form onSubmit={handlePlaceOrder} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 animate-fade-in-up">
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-3">
                 Select Quantity
@@ -275,10 +289,10 @@ function App() {
                 <button
                   type="button"
                   onClick={() => setSelectedQuantity('250g')}
-                  className={`p-4 rounded-xl border-2 font-semibold transition-all ${
+                  className={`p-4 rounded-xl border-2 font-semibold transition-all duration-300 hover:scale-105 ${
                     selectedQuantity === '250g'
-                      ? 'border-orange-500 bg-orange-50 text-orange-700'
-                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-25'
+                      ? 'border-orange-500 bg-orange-50 text-orange-700 animate-pulse'
+                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50 hover:shadow-md'
                   }`}
                 >
                   <div className="text-lg font-bold">250g</div>
@@ -287,10 +301,10 @@ function App() {
                 <button
                   type="button"
                   onClick={() => setSelectedQuantity('500g')}
-                  className={`p-4 rounded-xl border-2 font-semibold transition-all ${
+                  className={`p-4 rounded-xl border-2 font-semibold transition-all duration-300 hover:scale-105 ${
                     selectedQuantity === '500g'
-                      ? 'border-orange-500 bg-orange-50 text-orange-700'
-                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-25'
+                      ? 'border-orange-500 bg-orange-50 text-orange-700 animate-pulse'
+                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50 hover:shadow-md'
                   }`}
                 >
                   <div className="text-lg font-bold">500g</div>
@@ -299,10 +313,10 @@ function App() {
                 <button
                   type="button"
                   onClick={() => setSelectedQuantity('1kg')}
-                  className={`p-4 rounded-xl border-2 font-semibold transition-all ${
+                  className={`p-4 rounded-xl border-2 font-semibold transition-all duration-300 hover:scale-105 ${
                     selectedQuantity === '1kg'
-                      ? 'border-orange-500 bg-orange-50 text-orange-700'
-                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-25'
+                      ? 'border-orange-500 bg-orange-50 text-orange-700 animate-pulse'
+                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50 hover:shadow-md'
                   }`}
                 >
                   <div className="text-lg font-bold">1kg</div>
@@ -329,15 +343,15 @@ function App() {
                 placeholder="e.g., +1234567890"
                 className={`w-full p-4 border-2 rounded-xl focus:outline-none text-lg transition-colors ${
                   whatsappNumber && !validatePhoneNumber(whatsappNumber)
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-gray-200 focus:border-orange-500'
+                    ? 'border-red-300 bg-red-50 animate-pulse'
+                    : 'border-gray-200 focus:border-orange-500 focus:shadow-lg'
                 }`}
                 required
                 pattern="[+\d\s]{10,15}"
                 title="Please enter a valid phone number with 10-15 digits"
               />
               {whatsappNumber && !validatePhoneNumber(whatsappNumber) && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-red-600 animate-bounce">
                   Please enter a valid phone number (10-15 digits)
                 </p>
               )}
@@ -345,10 +359,10 @@ function App() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white py-4 px-8 rounded-xl font-semibold text-lg transition-all ${
-                !isLoading && 'hover:scale-[1.02]'
+              className={`w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white py-4 px-8 rounded-xl font-semibold text-lg transition-all duration-300 ${
+                !isLoading && 'hover:scale-105 hover:shadow-xl'
               } flex items-center justify-center gap-2 ${
-                isLoading && 'opacity-75 cursor-not-allowed'
+                isLoading && 'opacity-75 cursor-not-allowed animate-pulse'
               }`}
             >
               {isLoading ? (
@@ -358,7 +372,7 @@ function App() {
                 </>
               ) : (
                 <>
-                  <MessageCircle className="w-6 h-6" />
+                  <MessageCircle className="w-6 h-6 animate-pulse" />
                   Place Order via WhatsApp
                 </>
               )}
@@ -381,10 +395,10 @@ function App() {
        */}
       <footer className="bg-gray-800 text-white py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
+          <div className="grid md:grid-cols-3 gap-8 text-center md:text-left animate-fade-in-up">
             <div>
-              <div className="flex items-center justify-center md:justify-start space-x-2 mb-4">
-                <Cat className="w-8 h-8 text-orange-500" />
+              <div className="flex items-center justify-center md:justify-start space-x-2 mb-4 hover:scale-105 transition-transform duration-300">
+                <Cat className="w-8 h-8 text-orange-500 animate-pulse" />
                 <span className="text-2xl font-bold">choji.store</span>
               </div>
               <p className="text-gray-400">
@@ -393,8 +407,8 @@ function App() {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
-              <div className="flex items-center justify-center md:justify-start mb-2">
-                <Phone className="w-4 h-4 mr-2" />
+              <div className="flex items-center justify-center md:justify-start mb-2 hover:text-orange-400 transition-colors duration-300">
+                <Phone className="w-4 h-4 mr-2 animate-pulse" />
                 <span className="text-gray-400">Available via WhatsApp</span>
               </div>
             </div>
@@ -402,14 +416,14 @@ function App() {
               <h3 className="text-lg font-semibold mb-4">Order Now</h3>
               <button
                 onClick={scrollToOrder}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-colors flex items-center gap-2 mx-auto md:mx-0"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center gap-2 mx-auto md:mx-0"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 animate-pulse" />
                 WhatsApp Order
               </button>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 animate-fade-in-up">
             <p>&copy; 2025 choji.store. Made with ❤️ for cats everywhere.</p>
           </div>
         </div>
