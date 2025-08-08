@@ -1,24 +1,40 @@
 {
+  // TypeScript Configuration for Application Source Code
+  // 
+  // This configuration file handles TypeScript compilation for the React
+  // application source code with optimized settings for modern development
+  // and strict type checking to ensure code quality and reliability.
+  // 
+  // Target Environment: ES2020 for modern browser compatibility
+  // Module System: ESNext with bundler resolution for Vite integration
+  // JSX: React 18 automatic JSX transform
+  // Type Checking: Strict mode with comprehensive linting rules
+  
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+    // Compilation Target
+    "target": "ES2020",                    // Modern JavaScript features
+    "useDefineForClassFields": true,       // ES2022 class field semantics
+    "lib": ["ES2020", "DOM", "DOM.Iterable"], // Available APIs
+    
+    // Module System
+    "module": "ESNext",                    // Latest module syntax
+    "skipLibCheck": true,                  // Skip type checking of declaration files
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
+    /* Bundler Integration (Vite) */
+    "moduleResolution": "bundler",         // Bundler-specific module resolution
+    "allowImportingTsExtensions": true,    // Import .ts/.tsx files directly
+    "isolatedModules": true,               // Ensure each file can be transpiled independently
+    "moduleDetection": "force",            // Always treat files as modules
+    "noEmit": true,                        // Let Vite handle emission
+    "jsx": "react-jsx",                   // React 18 automatic JSX transform
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    /* Strict Type Checking */
+    "strict": true,                        // Enable all strict type checking options
+    "noUnusedLocals": true,                // Report unused local variables
+    "noUnusedParameters": true,            // Report unused function parameters
+    "noFallthroughCasesInSwitch": true     // Report fallthrough cases in switch statements
   },
-  "include": ["src"]
+  
+  // Source Files
+  "include": ["src"]                       // Include all files in src directory
 }

@@ -1,4 +1,20 @@
 {
+  // TypeScript Project References Configuration
+  // 
+  // This is the root TypeScript configuration file that uses project references
+  // to organize the build process efficiently. It delegates compilation to
+  // specialized configuration files for different parts of the application.
+  // 
+  // Project Structure:
+  // - tsconfig.app.json: Application source code compilation
+  // - tsconfig.node.json: Build tooling and Node.js scripts
+  // 
+  // Benefits:
+  // - Faster incremental builds
+  // - Better IDE performance
+  // - Cleaner separation of concerns
+  // - Optimized compilation process
+  
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

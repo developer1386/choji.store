@@ -2,8 +2,30 @@
   "name": "choji-store",
   "private": true,
   "version": "1.0.0",
-  "description": "Premium homemade cat food e-commerce landing page",
+  "description": "Premium homemade cat food e-commerce landing page built with React, TypeScript, and Tailwind CSS. Features WhatsApp integration, SEO optimization, and comprehensive analytics.",
   "type": "module",
+  "keywords": [
+    "cat-food",
+    "e-commerce",
+    "react",
+    "typescript",
+    "tailwind-css",
+    "whatsapp-integration",
+    "seo-optimized",
+    "analytics",
+    "pet-food",
+    "homemade"
+  ],
+  "author": {
+    "name": "Usama Ejaz",
+    "url": "https://github.com/usamaejaz9741"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usamaejaz9741/choji.store.git"
+  },
+  "homepage": "https://choji.store",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
