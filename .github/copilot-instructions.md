@@ -145,7 +145,7 @@ Backgrounds:
       const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
       const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
-    } catch (error) {
+    } catch {
       alert('Failed to open WhatsApp. Please try again.');
     } finally {
       setIsLoading(false);

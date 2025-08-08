@@ -20,6 +20,8 @@ Premium natural homemade cat food e-commerce landing page built with React, Type
 - Rich structured data
 - Optimized content hierarchy
 - Canonical URL implementation
+- Umami Analytics integration for privacy-focused tracking
+- Mobile-first indexing optimizations
 
 ### Accessibility
 - ARIA-enhanced components
@@ -37,6 +39,9 @@ Premium natural homemade cat food e-commerce landing page built with React, Type
 - Responsive image handling
 - Efficient bundle size
 - Modern build tooling
+- Service worker for offline support
+- Optimized asset caching
+- Progressive Web App (PWA) features
 
 ## 🛠️ Tech Stack
 

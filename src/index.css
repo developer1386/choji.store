@@ -1,18 +1,96 @@
 /**
- * Global styles for Choji Cat Food Store
+ * Global Styles for Choji Cat Food Store
  * 
- * This file serves as the main entry point for all styles in the application.
- * It uses Tailwind's layer system for optimal CSS organization:
+ * This is the main stylesheet that serves as the foundation for the entire application's
+ * visual design system. It leverages Tailwind's layered architecture for optimal
+ * organization and maintainability of styles.
  * 
- * - base: Reset and default styles (typography, box-sizing, etc.)
- * - components: Reusable component classes
- * - utilities: Single-purpose utility classes
+ * Stylesheet Architecture:
+ * 1. Base Layer (@tailwind base):
+ *    - CSS reset and normalization
+ *    - Default typography settings
+ *    - Box model defaults
+ *    - Global element styles
  * 
- * Color Palette:
- * - Primary: orange-500 (buttons, highlights)
- * - Secondary: green-500 (accents)
- * - Backgrounds: white, orange-50, green-50
- * - Text: gray-800 (headings), gray-600 (body)
+ * 2. Components Layer (@tailwind components):
+ *    - Reusable UI components
+ *    - Custom component classes
+ *    - Shared patterns
+ * 
+ * 3. Utilities Layer (@tailwind utilities):
+ *    - Single-purpose utility classes
+ *    - Override helpers
+ *    - Responsive utilities
+ * 
+ * Design System:
+ * 
+ * 1. Color Palette:
+ *    Primary Colors:
+ *    - Orange (orange-500): #F97316
+ *      · Primary buttons
+ *      · Call-to-action elements
+ *      · Highlights and accents
+ * 
+ *    - Green (green-500): #22C55E
+ *      · Secondary accents
+ *      · Success states
+ *      · Nature-themed elements
+ * 
+ *    Neutral Colors:
+ *    - Text Dark (gray-800): #1F2937
+ *      · Headings
+ *      · Primary text
+ * 
+ *    - Text Medium (gray-600): #4B5563
+ *      · Body text
+ *      · Secondary information
+ * 
+ *    - Text Light (gray-400): #9CA3AF
+ *      · Subtle text
+ *      · Disabled states
+ * 
+ *    Background Colors:
+ *    - Pure White: #FFFFFF
+ *      · Card backgrounds
+ *      · Primary content areas
+ * 
+ *    - Light Orange (orange-50): #FFF7ED
+ *      · Section backgrounds
+ *      · Hover states
+ * 
+ *    - Light Green (green-50): #F0FDF4
+ *      · Alternative backgrounds
+ *      · Success indicators
+ * 
+ * 2. Typography Scale:
+ *    - Headings: text-5xl to text-xl
+ *    - Body: text-base, text-lg
+ *    - Small: text-sm, text-xs
+ * 
+ * 3. Spacing System:
+ *    - Based on 4px grid
+ *    - Common spacings: 4, 8, 16, 24, 32, 48, 64
+ * 
+ * 4. Breakpoints:
+ *    - sm: 640px
+ *    - md: 768px
+ *    - lg: 1024px
+ *    - xl: 1280px
+ *    - 2xl: 1536px
+ * 
+ * CSS Variables:
+ * --primary: #F97316
+ * --secondary: #22C55E
+ * --text-primary: #1F2937
+ * --text-secondary: #4B5563
+ * 
+ * Best Practices:
+ * - Use utility classes over custom CSS
+ * - Follow mobile-first approach
+ * - Maintain consistent spacing
+ * - Use semantic color names
+ * 
+ * @see {@link https://tailwindcss.com/docs Tailwind Documentation}
  */
 
 /* Reset and base styles */

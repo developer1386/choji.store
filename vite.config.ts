@@ -1,28 +1,80 @@
 /**
  * Vite Configuration for Choji Cat Food Store
  * 
- * Primary build and development configuration for the application.
- * Optimizes the development experience and production build process.
+ * This configuration file sets up the build and development environment for the application.
+ * It provides optimized settings for both development and production builds while
+ * ensuring the best possible developer experience and end-user performance.
  * 
- * Build Features:
- * - React plugin for JSX/TSX compilation
- * - Dependency optimization settings
- * - Development server configuration
- * - Asset handling setup
+ * Build Configuration:
+ * 1. React Integration:
+ *    - JSX/TSX compilation with React plugin
+ *    - Fast Refresh support for rapid development
+ *    - Proper source map generation
  * 
- * Performance Optimizations:
- * - Excludes specific dependencies from optimization
- * - Enables fast refresh in development
- * - Optimizes chunk splitting
- * - Handles asset optimization
+ * 2. Performance Optimizations:
+ *    - Dependency Pre-bundling:
+ *      · Converts CommonJS/UMD to ESM
+ *      · Improves browser caching
+ *      · Reduces HTTP requests
+ * 
+ *    - Build Optimization:
+ *      · Code splitting strategies
+ *      · Tree shaking for dead code
+ *      · Chunk size optimization
+ *      · Asset compression
+ * 
+ *    - Development Server:
+ *      · Hot Module Replacement (HMR)
+ *      · Fast refresh capabilities
+ *      · Efficient caching
+ *      · Network error handling
+ * 
+ * 3. Asset Handling:
+ *    - Static Asset Processing:
+ *      · Image optimization
+ *      · SVG handling
+ *      · Font processing
+ *      · Media file support
+ * 
+ *    - CSS Processing:
+ *      · PostCSS integration
+ *      · Tailwind JIT compilation
+ *      · CSS modules support
+ *      · Sass/Less compatibility
  * 
  * Development Features:
- * - Hot Module Replacement (HMR)
- * - Fast refresh for React components
- * - Source map generation
- * - Error overlay integration
+ * - Enhanced Developer Experience:
+ *   · Instant hot reloading
+ *   · Detailed error messages
+ *   · Source map support
+ *   · TypeScript integration
  * 
- * @see https://vitejs.dev/config/
+ * - Debug Capabilities:
+ *   · Error overlay
+ *   · Stack trace mapping
+ *   · Network request inspection
+ *   · Performance monitoring
+ * 
+ * Production Optimizations:
+ * - Bundle Analysis:
+ *   · Size optimization
+ *   · Dependency tracking
+ *   · Code splitting
+ * 
+ * - Performance:
+ *   · Minification
+ *   · Tree shaking
+ *   · Chunk optimization
+ *   · Asset compression
+ * 
+ * Security Considerations:
+ * - CSP compatibility
+ * - Secure asset handling
+ * - Environment variable protection
+ * 
+ * @see {@link https://vitejs.dev/config/ Vite Configuration}
+ * @see {@link https://vitejs.dev/guide/features.html Vite Features}
+ * @see {@link https://github.com/vitejs/vite/tree/main/packages/plugin-react React Plugin}
  */
 
 import { defineConfig } from 'vite';
