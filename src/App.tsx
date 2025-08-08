@@ -185,8 +185,8 @@ function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    // WhatsApp business number - replace with actual number
-    const businessNumber = '1234567890';  // Replace with your actual WhatsApp business number
+    // Your business WhatsApp number
+    const businessNumber = '923152967579';  // Fixed business number without spaces and '+'
     
     const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
     const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
@@ -226,7 +226,7 @@ function App() {
           <div className="flex items-center space-x-2">
             <a href="/" className="flex items-center space-x-2" aria-label="Go to homepage">
               <img 
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23f97316'/%3E%3Ctext x='50' y='60' text-anchor='middle' fill='white' font-size='40' font-family='Arial'%3E🐱%3C/text%3E%3C/svg%3E"
+                src="/logo/logo.svg" 
                 alt="Choji Store Logo"
                 className="h-12 w-auto"
                 width="750"
@@ -333,7 +333,7 @@ function App() {
             <div className="bg-gradient-to-br from-orange-100 to-green-100 rounded-2xl p-4">
               <div className="relative w-full pb-[100%]">
                 <img 
-                  src="https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  src="/images/choji.jpg" 
                   alt="Choji - The inspiration behind our premium homemade cat food"
                   className="absolute inset-0 w-full h-full object-cover rounded-xl"
                   loading="eager"
@@ -637,7 +637,7 @@ function App() {
             <div>
               <div className="flex items-center justify-center md:justify-start space-x-2 mb-4">
                 <img 
-                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='white'/%3E%3Ctext x='50' y='60' text-anchor='middle' fill='%23f97316' font-size='40' font-family='Arial'%3E🐱%3C/text%3E%3C/svg%3E"
+                  src="/logo/logo-footer.svg" 
                   alt="Choji Store"
                   className="h-12 w-auto"
                   width="750"
