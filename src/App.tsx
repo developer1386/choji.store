@@ -29,7 +29,6 @@ import { Heart, Leaf, Shield, ChefHat, Phone, MessageCircle, Cat, ArrowDown } fr
 function App() {
   // State for managing order form
   const [selectedQuantity, setSelectedQuantity] = useState('250g');  // Track selected product quantity
-  const [whatsappNumber, setWhatsappNumber] = useState('');         // Store customer's WhatsApp number
   const [isLoading, setIsLoading] = useState(false);                // Loading state for form submission
 
   /**
@@ -49,39 +48,18 @@ function App() {
   };
 
   /**
-   * Validates the provided phone number for WhatsApp integration
-   * 
-   * Performs basic validation on the phone number to ensure it meets
-   * WhatsApp's requirements. Strips all non-digit characters before validation.
-   * 
-   * @param number - The phone number to validate
-   * @returns boolean - True if number is valid (10-15 digits), false otherwise
-   * 
-   * @example
-   * validatePhoneNumber('+1-234-567-8900') // returns true
-   * validatePhoneNumber('123') // returns false
-   */
-  const validatePhoneNumber = (number: string) => {
-    const cleanNumber = number.replace(/\D/g, ''); // Remove all non-digit characters
-    return cleanNumber.length >= 10 && cleanNumber.length <= 15;
-  };
-
-  /**
    * Handles the order form submission and WhatsApp integration
    * 
-   * This function manages the entire order submission process:
+   * This function manages the order submission process:
    * 1. Prevents default form submission
-   * 2. Validates the phone number format
-   * 3. Constructs the WhatsApp message with order details
-   * 4. Opens WhatsApp in a new window with pre-filled message
-   * 5. Handles any errors during the process
+   * 2. Constructs the WhatsApp message with order details
+   * 3. Opens WhatsApp in a new window with pre-filled message
+   * 4. Handles any errors during the process
    * 
    * State Management:
    * - Updates isLoading state during the process
-   * - Resets form on successful submission
    * 
    * Error Handling:
-   * - Validates phone number presence and format
    * - Handles window.open failures gracefully
    * - Shows user-friendly error messages
    * 
@@ -92,20 +70,11 @@ function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!whatsappNumber) {
-      alert('Please enter your WhatsApp number');
-      setIsLoading(false);
-      return;
-    }
-
-    if (!validatePhoneNumber(whatsappNumber)) {
-      alert('Please enter a valid phone number (10-15 digits)');
-      setIsLoading(false);
-      return;
-    }
+    // Your business WhatsApp number
+    const businessNumber = '923152967579';  // Fixed business number without spaces and '+'
     
     const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
-    const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
     
     try {
       window.open(whatsappUrl, '_blank');
@@ -361,38 +330,6 @@ function App() {
                   <div className="text-sm opacity-75">Family Size</div>
                 </button>
               </div>
-            </div>
-            <div className="mb-6">
-              <label htmlFor="whatsapp" className="block text-sm font-semibold text-gray-700 mb-3">
-                WhatsApp Number
-              </label>
-              <input
-                type="tel"
-                id="whatsapp"
-                value={whatsappNumber}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  // Only allow digits, +, and spaces
-                  const cleaned = value.replace(/[^\d\s+]/g, '');
-                  // Limit to 15 characters
-                  const truncated = cleaned.slice(0, 15);
-                  setWhatsappNumber(truncated);
-                }}
-                placeholder="e.g., +1234567890"
-                className={`w-full p-4 border-2 rounded-xl focus:outline-none text-lg transition-colors ${
-                  whatsappNumber && !validatePhoneNumber(whatsappNumber)
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-gray-200 focus:border-orange-500'
-                }`}
-                required
-                pattern="[+\d\s]{10,15}"
-                title="Please enter a valid phone number with 10-15 digits"
-              />
-              {whatsappNumber && !validatePhoneNumber(whatsappNumber) && (
-                <p className="mt-2 text-sm text-red-600">
-                  Please enter a valid phone number (10-15 digits)
-                </p>
-              )}
             </div>
             <button
               type="submit"
