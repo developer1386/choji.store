@@ -6,8 +6,10 @@ This is a React + TypeScript e-commerce landing page for premium homemade cat fo
 ## Key Technologies
 - React 18.3.1 with TypeScript 5.5.3
 - Vite 7.1.0 for build tooling
-- Tailwind CSS 3.4.1 for styling
+- Tailwind CSS 3.4.17 for styling
 - Lucide React 0.344.0 for icons
+- ESLint 9.9.1 for code quality
+- PostCSS 8.5.6 for CSS processing
 
 ## Project Structure
 ```
@@ -120,6 +122,22 @@ npm run dev    # Start development server
 ## Testing and Quality
 - ESLint for code quality (configuration in `eslint.config.js`)
 - TypeScript for type safety
+- Automated accessibility checks using ESLint rules
+
+### Accessibility Best Practices
+- Use semantic HTML elements for better screen reader support
+- Maintain proper heading hierarchy (h1 -> h2 -> h3)
+- Provide alt text for all images
+- Ensure sufficient color contrast (WCAG 2.1 compliant)
+- Implement keyboard navigation support
+- Use ARIA attributes when necessary
+
+### Performance Optimization
+- Lazy loading of images using native loading="lazy"
+- Component code splitting for better initial load time
+- Tailwind's JIT mode for minimal CSS bundle size
+- Asset optimization using Vite's built-in features
+- Responsive image handling for different device sizes
 
 ## Debugging Workflows
 
@@ -143,10 +161,24 @@ npm run dev    # Start development server
 - Vite Dev Server: `npm run dev`
   - Hot Module Replacement (HMR)
   - Fast refresh for React components
+  - Asset optimization and bundling
+  - Development server with HTTPS support
 - Browser DevTools
   - React DevTools for component inspection
   - Network tab for WhatsApp API debugging
+  - Lighthouse for performance auditing
+  - Elements panel for style debugging
 - VS Code Extensions
-  - Tailwind CSS IntelliSense
-  - ESLint
-  - TypeScript support
+  - Tailwind CSS IntelliSense for class suggestions
+  - ESLint for real-time linting
+  - TypeScript for type checking
+  - Prettier for code formatting
+  - GitHub Copilot for AI-assisted development
+  - Error Lens for inline error display
+
+### Environment Setup
+- Node.js 18.x or later recommended
+- npm 9.x or later for package management
+- Git for version control
+- VS Code as the recommended IDE
+- Chrome or Firefox for development

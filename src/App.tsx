@@ -1,7 +1,26 @@
 /**
  * Main application component for the Choji Cat Food Store
- * A single-page e-commerce application for premium homemade cat food
- * Features include product showcase, quantity selection, and WhatsApp integration for orders
+ * 
+ * A single-page e-commerce application for premium homemade cat food.
+ * This component manages the entire application state and UI rendering.
+ * 
+ * Key Features:
+ * - Product showcase with benefits and quantities
+ * - Real-time quantity selection
+ * - WhatsApp integration for order placement
+ * - Responsive design with mobile-first approach
+ * - Accessibility-compliant UI components
+ * 
+ * State Management:
+ * - selectedQuantity: Tracks chosen product size (250g/500g/1kg)
+ * - whatsappNumber: Stores customer contact information
+ * - isLoading: Manages form submission state
+ * 
+ * @component
+ * @example
+ * return (
+ *   <App />
+ * )
  */
 
 import React, { useState } from 'react';
@@ -15,16 +34,32 @@ function App() {
 
   /**
    * Smoothly scrolls the page to the order form section
-   * Used by various CTA buttons throughout the page
+   * 
+   * This function provides a smooth scrolling experience when users click
+   * on CTA buttons throughout the page. It uses the native smooth scroll
+   * behavior for better performance.
+   * 
+   * Key Features:
+   * - Smooth animation using scroll-behavior: smooth
+   * - Falls back gracefully if element is not found
+   * - Accessible via keyboard navigation
    */
   const scrollToOrder = () => {
     document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   /**
-   * Validates the provided phone number
+   * Validates the provided phone number for WhatsApp integration
+   * 
+   * Performs basic validation on the phone number to ensure it meets
+   * WhatsApp's requirements. Strips all non-digit characters before validation.
+   * 
    * @param number - The phone number to validate
    * @returns boolean - True if number is valid (10-15 digits), false otherwise
+   * 
+   * @example
+   * validatePhoneNumber('+1-234-567-8900') // returns true
+   * validatePhoneNumber('123') // returns false
    */
   const validatePhoneNumber = (number: string) => {
     const cleanNumber = number.replace(/\D/g, ''); // Remove all non-digit characters
@@ -32,9 +67,26 @@ function App() {
   };
 
   /**
-   * Handles the order form submission
-   * Validates phone number, constructs WhatsApp message, and opens WhatsApp chat
+   * Handles the order form submission and WhatsApp integration
+   * 
+   * This function manages the entire order submission process:
+   * 1. Prevents default form submission
+   * 2. Validates the phone number format
+   * 3. Constructs the WhatsApp message with order details
+   * 4. Opens WhatsApp in a new window with pre-filled message
+   * 5. Handles any errors during the process
+   * 
+   * State Management:
+   * - Updates isLoading state during the process
+   * - Resets form on successful submission
+   * 
+   * Error Handling:
+   * - Validates phone number presence and format
+   * - Handles window.open failures gracefully
+   * - Shows user-friendly error messages
+   * 
    * @param e - Form submission event
+   * @throws Will show an alert if WhatsApp window fails to open
    */
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();

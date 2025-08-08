@@ -1,6 +1,18 @@
-/* Global styles for Choji Cat Food Store
- * Imports Tailwind CSS base styles, components, and utilities
- * This file is the main entry point for all styles in the application
+/**
+ * Global styles for Choji Cat Food Store
+ * 
+ * This file serves as the main entry point for all styles in the application.
+ * It uses Tailwind's layer system for optimal CSS organization:
+ * 
+ * - base: Reset and default styles (typography, box-sizing, etc.)
+ * - components: Reusable component classes
+ * - utilities: Single-purpose utility classes
+ * 
+ * Color Palette:
+ * - Primary: orange-500 (buttons, highlights)
+ * - Secondary: green-500 (accents)
+ * - Backgrounds: white, orange-50, green-50
+ * - Text: gray-800 (headings), gray-600 (body)
  */
 
 /* Reset and base styles */
