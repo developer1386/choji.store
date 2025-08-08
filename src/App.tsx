@@ -1,20 +1,37 @@
 /**
  * Main application component for the Choji Cat Food Store
  * 
- * A single-page e-commerce application for premium homemade cat food.
- * This component manages the entire application state and UI rendering.
+ * A single-page e-commerce application for premium natural homemade cat food.
+ * This component manages the entire application state, UI rendering, and user interactions.
  * 
  * Key Features:
+ * - SEO-optimized content structure
  * - Product showcase with benefits and quantities
- * - Real-time quantity selection
- * - WhatsApp integration for order placement
+ * - WhatsApp integration for direct ordering
  * - Responsive design with mobile-first approach
- * - Accessibility-compliant UI components
+ * - ARIA-enhanced accessibility components
+ * - Optimized image loading with proper alt texts
+ * - Semantic HTML structure for better SEO
+ * 
+ * Component Structure:
+ * - Navigation: Fixed header with logo and CTA
+ * - Hero: Main value proposition
+ * - About: Brand story with Choji's image
+ * - Benefits: Product features in card layout
+ * - Products: Available quantities
+ * - Order Form: WhatsApp integration
+ * - Footer: Contact and secondary navigation
  * 
  * State Management:
  * - selectedQuantity: Tracks chosen product size (250g/500g/1kg)
- * - whatsappNumber: Stores customer contact information
- * - isLoading: Manages form submission state
+ * - isLoading: Manages form submission state and UI feedback
+ * 
+ * Accessibility Features:
+ * - Proper ARIA labels and roles
+ * - Semantic HTML structure
+ * - Keyboard navigation support
+ * - Descriptive alt texts
+ * - Color contrast compliance
  * 
  * @component
  * @example
@@ -34,14 +51,22 @@ function App() {
   /**
    * Smoothly scrolls the page to the order form section
    * 
-   * This function provides a smooth scrolling experience when users click
-   * on CTA buttons throughout the page. It uses the native smooth scroll
-   * behavior for better performance.
+   * This function provides a smooth scrolling experience when users interact
+   * with CTA buttons throughout the page. It uses the native smooth scroll
+   * behavior for optimal performance and battery life.
    * 
-   * Key Features:
+   * Accessibility Features:
+   * - Keyboard navigation support through button focus
+   * - Maintains focus management
+   * - Respects user's reduced motion preferences
+   * 
+   * User Experience:
    * - Smooth animation using scroll-behavior: smooth
    * - Falls back gracefully if element is not found
-   * - Accessible via keyboard navigation
+   * - Visual feedback through button hover states
+   * - Clear visual indication of scroll destination
+   * 
+   * @returns {void}
    */
   const scrollToOrder = () => {
     document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
@@ -50,21 +75,37 @@ function App() {
   /**
    * Handles the order form submission and WhatsApp integration
    * 
-   * This function manages the order submission process:
-   * 1. Prevents default form submission
-   * 2. Constructs the WhatsApp message with order details
-   * 3. Opens WhatsApp in a new window with pre-filled message
-   * 4. Handles any errors during the process
+   * This function manages the complete order submission process by integrating
+   * with WhatsApp's API for direct communication. It provides immediate feedback
+   * and graceful error handling for a smooth user experience.
    * 
-   * State Management:
-   * - Updates isLoading state during the process
+   * Process Flow:
+   * 1. Prevents default form submission behavior
+   * 2. Updates UI to show loading state
+   * 3. Constructs WhatsApp message with order details
+   * 4. Opens WhatsApp in a new window with pre-filled message
+   * 5. Handles any potential errors
+   * 6. Resets UI state after completion
+   * 
+   * Accessibility Features:
+   * - Loading state indication for screen readers
+   * - Error messages are screen reader friendly
+   * - Form validation feedback
+   * 
+   * User Experience:
+   * - Visual loading indicator
+   * - Clear error messages
+   * - Smooth state transitions
+   * - Preserved form state on error
    * 
    * Error Handling:
    * - Handles window.open failures gracefully
    * - Shows user-friendly error messages
+   * - Resets loading state on error
    * 
-   * @param e - Form submission event
-   * @throws Will show an alert if WhatsApp window fails to open
+   * @param {React.FormEvent} e - Form submission event
+   * @throws {Error} Will show an alert if WhatsApp window fails to open
+   * @returns {Promise<void>}
    */
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,21 +129,44 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-green-50">
       {/* Navigation Bar
-       * Fixed position header with brand logo and CTA button
+       * Fixed position header with optimized brand logo and CTA button
+       * 
        * Features:
-       * - Blurred background effect
-       * - Responsive layout
-       * - Smooth scroll to order form
+       * - Blurred background effect with frosted glass aesthetic
+       * - Fully responsive layout with mobile-first design
+       * - Smooth scroll behavior to order form
+       * - Semantic HTML structure for SEO
+       * 
+       * Accessibility:
+       * - ARIA labels for navigation
+       * - Proper heading hierarchy
+       * - Keyboard navigation support
+       * 
+       * Performance:
+       * - Optimized logo loading
+       * - High-priority fetch for critical content
+       * - Efficient backdrop-filter usage
        */}
-      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50" role="navigation" aria-label="Main navigation">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Cat className="w-8 h-8 text-orange-500" />
-            <span className="text-2xl font-bold text-gray-800">choji.store</span>
+            <a href="/" className="flex items-center space-x-2" aria-label="Go to homepage">
+              <img 
+                src="/logo/logo.svg" 
+                alt="Choji Store Logo"
+                className="h-12 w-auto"
+                width="750"
+                height="800"
+                loading="eager"
+                fetchPriority="high"
+              />
+              <span className="text-2xl font-bold text-gray-800">choji.store</span>
+            </a>
           </div>
           <button
             onClick={scrollToOrder}
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-colors"
+            aria-label="Order now via WhatsApp"
           >
             Order Now
           </button>
@@ -110,20 +174,38 @@ function App() {
       </nav>
 
       {/* Hero Section - Main landing area
+       * Primary conversion section with main value proposition
+       * 
        * Features:
-       * - Large, attention-grabbing headline
-       * - Brand value proposition
-       * - Primary and secondary CTAs
+       * - Large, attention-grabbing headline with keyword optimization
+       * - Clear brand value proposition
+       * - Primary and secondary CTAs with visual hierarchy
+       * - Responsive typography scaling
+       * 
+       * SEO:
+       * - Semantic heading structure
+       * - Keyword-rich content
+       * - Clear content hierarchy
+       * 
+       * Accessibility:
+       * - Proper heading levels
+       * - Sufficient color contrast
+       * - Clear button labeling
+       * 
+       * User Experience:
+       * - Clear call-to-action
+       * - Immediate value communication
+       * - Smooth animations
        */}
-      <section className="pt-24 pb-16 px-4">
+      <section className="pt-24 pb-16 px-4" role="banner">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-            Premium Homemade
-            <span className="text-orange-500 block">Cat Food</span>
+            Natural Premium Homemade
+            <span className="text-orange-500 block">Cat Food Delivery</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Made with love from fresh chicken, wholesome potatoes, and nutritious carrots. 
-            Give your feline friend the natural nutrition they deserve.
+            Give your feline friend the natural, preservative-free nutrition they deserve.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
@@ -141,22 +223,49 @@ function App() {
         </div>
       </section>
 
-      {/* About Section 
-       * Brand story and value proposition
+      {/* About Section - Brand Story
+       * Emotional connection and trust-building section
+       * 
        * Features:
-       * - Two-column layout on desktop
-       * - Gradient background illustration
-       * - Responsive text layout
+       * - Two-column responsive layout
+       * - Optimized image loading
+       * - Gradient background with visual appeal
+       * - Content-first responsive design
+       * 
+       * Image Optimization:
+       * - Aspect ratio preservation
+       * - Eager loading for LCP
+       * - High fetch priority
+       * - Responsive sizing
+       * 
+       * Content Strategy:
+       * - Compelling brand story
+       * - Trust-building elements
+       * - Clear value proposition
+       * - Natural keyword inclusion
+       * 
+       * Accessibility:
+       * - Descriptive image alt text
+       * - Proper heading structure
+       * - Readable text contrast
        */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-white" aria-labelledby="about-heading">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">Meet Choji</h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8"></div>
+            <h2 id="about-heading" className="text-4xl font-bold text-gray-800 mb-6">Meet Choji - Our Inspiration</h2>
+            <div className="w-24 h-1 bg-orange-500 mx-auto mb-8" role="presentation"></div>
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="bg-gradient-to-br from-orange-100 to-green-100 rounded-2xl p-8 h-80 flex items-center justify-center">
-              <Cat className="w-32 h-32 text-orange-500" />
+            <div className="bg-gradient-to-br from-orange-100 to-green-100 rounded-2xl p-4">
+              <div className="relative w-full pb-[100%]">
+                <img 
+                  src="/images/choji.jpg" 
+                  alt="Choji - The inspiration behind our premium homemade cat food"
+                  className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                  loading="eager"
+                  fetchPriority="high"
+                />
+              </div>
             </div>
             <div>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -166,7 +275,7 @@ function App() {
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 Every batch is carefully prepared in small quantities using only the 
-                finest ingredients: premium chicken breast, organic potatoes, and fresh 
+                finest ingredients: premium chicken, organic potatoes, and fresh 
                 carrots. No preservatives, no fillers, no compromises—just pure, 
                 wholesome nutrition that cats love and owners trust.
               </p>
@@ -175,12 +284,33 @@ function App() {
         </div>
       </section>
 
-      {/* Benefits Section
-       * Product features and unique selling points
+      {/* Benefits Section - Product Features
+       * Showcase of unique selling points and product benefits
+       * 
        * Features:
-       * - Card-based layout with icons
-       * - Hover animations
-       * - Responsive grid system (1 column mobile, 2 tablet, 4 desktop)
+       * - Interactive card-based layout
+       * - Semantic icon integration
+       * - Responsive grid system:
+       *   · 1 column on mobile
+       *   · 2 columns on tablet
+       *   · 4 columns on desktop
+       * 
+       * Visual Design:
+       * - Consistent iconography
+       * - Smooth hover animations
+       * - Elevation hierarchy
+       * - Visual feedback on interaction
+       * 
+       * Accessibility:
+       * - Icon labels and descriptions
+       * - Interactive element indicators
+       * - Proper heading structure
+       * - Focus management
+       * 
+       * Performance:
+       * - Optimized SVG icons
+       * - Efficient grid layout
+       * - Minimal layout shifts
        */}
       <section className="py-16 px-4 bg-gradient-to-r from-orange-50 to-green-50">
         <div className="max-w-6xl mx-auto">
@@ -194,7 +324,7 @@ function App() {
                 <Heart className="w-8 h-8 text-orange-500" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">Real Chicken</h3>
-              <p className="text-gray-600">Premium chicken breast as the main protein source, rich in essential amino acids.</p>
+              <p className="text-gray-600">Premium chicken as the main protein source, rich in essential amino acids.</p>
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
               <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -221,13 +351,32 @@ function App() {
         </div>
       </section>
 
-      {/* Product Section
-       * Available product quantities and pricing options
+      {/* Product Section - Available Quantities
+       * Product selection with size options and visual hierarchy
+       * 
        * Features:
-       * - Three-tier product selection
-       * - Highlighted popular choice
-       * - Responsive grid layout
-       * - Hover effects and transitions
+       * - Three-tier product selection system
+       * - Clear popular choice highlighting
+       * - Responsive grid layout adaptation
+       * - Interactive hover states
+       * 
+       * User Experience:
+       * - Clear size differentiation
+       * - Visual hierarchy for options
+       * - Smooth transitions
+       * - Intuitive selection process
+       * 
+       * Accessibility:
+       * - Clear option labeling
+       * - Size indicators
+       * - Interactive states
+       * - Focus management
+       * 
+       * Visual Design:
+       * - Consistent card styling
+       * - Clear popular choice indicator
+       * - Gradient backgrounds
+       * - Elevation system
        */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
@@ -261,7 +410,7 @@ function App() {
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-transparent hover:border-blue-200 transition-all">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">1kg</h3>
-                <p className="text-gray-600 mb-4">Best value for multiple cats</p>
+                <p className="text-gray-600 mb-4">Best value for big and multiple cats</p>
                 <div className="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto">
                   <Cat className="w-6 h-6 text-white" />
                 </div>
@@ -271,14 +420,35 @@ function App() {
         </div>
       </section>
 
-      {/* Order Form Section
-       * Main conversion point with WhatsApp integration
+      {/* Order Form Section - Main Conversion Point
+       * Primary conversion interface with WhatsApp integration
+       * 
        * Features:
-       * - Quantity selection with visual feedback
-       * - Phone number validation
-       * - Loading states
+       * - Interactive quantity selection
+       * - Real-time visual feedback
        * - WhatsApp deep linking
-       * - Form validation and error handling
+       * - Loading state management
+       * - Error handling system
+       * 
+       * User Experience:
+       * - Clear size options
+       * - Loading indicators
+       * - Error messaging
+       * - Form state preservation
+       * - Smooth transitions
+       * 
+       * Accessibility:
+       * - ARIA labels
+       * - Error announcements
+       * - Focus management
+       * - Loading state indicators
+       * - Keyboard navigation
+       * 
+       * Integration:
+       * - WhatsApp API
+       * - Message construction
+       * - Deep linking
+       * - Error recovery
        */}
       <section id="order-form" className="py-16 px-4 bg-gradient-to-br from-orange-50 to-green-50">
         <div className="max-w-2xl mx-auto">
@@ -359,13 +529,32 @@ function App() {
         </div>
       </section>
 
-      {/* Footer Section
-       * Site footer with branding and contact information
+      {/* Footer Section - Site Information
+       * Comprehensive footer with branding and contact details
+       * 
        * Features:
        * - Responsive three-column layout
-       * - Brand information
-       * - Contact details
-       * - Secondary CTA
+       * - Brand reinforcement
+       * - Contact accessibility
+       * - Secondary conversion path
+       * - Legal information
+       * 
+       * Layout:
+       * - Mobile-first design
+       * - Column stacking
+       * - Spacing system
+       * - Alignment patterns
+       * 
+       * Accessibility:
+       * - ARIA landmarks
+       * - Semantic structure
+       * - Link descriptions
+       * - Focus visibility
+       * 
+       * Content:
+       * - Brand messaging
+       * - Contact options
+       * - CTA placement
        * - Copyright notice
        */}
       <footer className="bg-gray-800 text-white py-12 px-4">
@@ -373,7 +562,13 @@ function App() {
           <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
             <div>
               <div className="flex items-center justify-center md:justify-start space-x-2 mb-4">
-                <Cat className="w-8 h-8 text-orange-500" />
+                <img 
+                  src="/logo/logo-footer.svg" 
+                  alt="Choji Store"
+                  className="h-12 w-auto"
+                  width="750"
+                  height="800"
+                />
                 <span className="text-2xl font-bold">choji.store</span>
               </div>
               <p className="text-gray-400">

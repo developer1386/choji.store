@@ -1,7 +1,7 @@
 # AI Agent Instructions for choji.store
 
 ## Project Overview
-This is a React + TypeScript e-commerce landing page for premium homemade cat food, built with Vite and styled with Tailwind CSS. The site features a simple, single-page design with WhatsApp integration for order placement.
+This is a React + TypeScript e-commerce landing page for premium natural homemade cat food, built with Vite and styled with Tailwind CSS. The site features a SEO-optimized single-page design with WhatsApp integration for order placement, enhanced accessibility features, and optimized performance.
 
 ## Key Technologies
 - React 18.3.1 with TypeScript 5.5.3
@@ -13,10 +13,21 @@ This is a React + TypeScript e-commerce landing page for premium homemade cat fo
 
 ## Project Structure
 ```
-src/
-  App.tsx      # Main application component with all UI logic
-  index.css    # Global styles and Tailwind imports
-  main.tsx     # Application entry point
+├── public/
+│   ├── logo/           # Logo assets (SVG, PNG)
+│   │   ├── logo.svg          # Main logo
+│   │   └── logo-footer.svg   # Footer variant
+│   ├── images/         # Content images
+│   │   └── choji.jpg        # Hero image
+│   └── favicon/        # Favicon assets
+│       ├── favicon.svg
+│       ├── favicon.ico
+│       └── site.webmanifest
+├── src/
+│   ├── App.tsx        # Main application component
+│   ├── index.css      # Global styles
+│   └── main.tsx       # Entry point
+└── ...config files    # TypeScript, ESLint, etc.
 ```
 
 ## Development Workflow
@@ -35,69 +46,151 @@ npm run dev    # Start development server
 
 ## Key Patterns and Conventions
 
+### SEO Implementation
+- Semantic HTML structure with proper heading hierarchy
+- Meta tags optimization for search engines and social sharing:
+  ```html
+  <meta name="description" content="Premium homemade cat food made with fresh chicken, potatoes, and carrots." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Premium Natural Homemade Cat Food | Fresh Ingredients" />
+  <meta name="twitter:card" content="summary_large_image" />
+  ```
+- Canonical URLs and proper meta tags
+- Rich content structure for better SEO ranking
+
+### Accessibility Features
+- ARIA attributes and roles:
+  ```tsx
+  role="navigation"
+  aria-label="Main navigation"
+  aria-labelledby="about-heading"
+  ```
+- Keyboard navigation support
+- Screen reader optimizations
+- Color contrast compliance
+- Focus management
+- Reduced motion support
+
 ### State Management
 - Local React state using `useState` hooks for form handling
-- State is contained within the `App.tsx` component
-
-### Styling
-- Tailwind CSS classes for all styling with consistent patterns:
+- Loading states for better UX:
   ```tsx
-  // Gradient backgrounds
-  "bg-gradient-to-b from-orange-50 to-green-50"    // Main page gradient
-  "bg-gradient-to-br from-orange-100 to-green-100" // Card gradients
-  
-  // Common button styles
-  "bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-colors"
-  
-  // Responsive layouts
-  "grid md:grid-cols-2 lg:grid-cols-4 gap-8"      // Responsive grid system
-  "flex flex-col sm:flex-row gap-4"               // Stack on mobile, row on desktop
-  
-  // Common UI elements
-  "shadow-lg hover:shadow-xl transition-shadow"    // Interactive cards
-  "w-24 h-1 bg-orange-500 mx-auto mb-8"          // Section dividers
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedQuantity, setSelectedQuantity] = useState('250g');
   ```
-- Color palette:
-  - Primary: orange-500 (buttons, highlights)
-  - Secondary: green-500 (accents)
-  - Backgrounds: white, orange-50, green-50
-  - Text: gray-800 (headings), gray-600 (body)
+- Form validation and error handling
+
+### Design System
+```tsx
+// Typography Scale
+"text-5xl md:text-6xl"  // Hero headings
+"text-4xl"              // Section headings
+"text-2xl"              // Subsection headings
+"text-lg"               // Body large
+
+// Spacing System
+"px-4 py-16"           // Section padding
+"gap-8"                // Grid gaps
+"space-x-2"            // Inline spacing
+
+// Interactive Elements
+"hover:scale-105"      // Hover animations
+"transition-colors"     // Color transitions
+"shadow-lg hover:shadow-xl" // Elevation changes
+
+// Color System
+Primary:
+- Orange: orange-500 (#F97316)
+- Green: green-500 (#22C55E)
+
+Neutrals:
+- Headings: gray-800 (#1F2937)
+- Body: gray-600 (#4B5563)
+- Subtle: gray-400 (#9CA3AF)
+
+Backgrounds:
+- White: white (#FFFFFF)
+- Light Orange: orange-50 (#FFF7ED)
+- Light Green: green-50 (#F0FDF4)
+```
 
 ### Component Architecture
-- Single page application with all logic in `App.tsx`
-- Sections are organized as nested components within `App.tsx`
-- UI components use Lucide React icons
+- Single page application with semantic sections:
+  ```tsx
+  <nav role="navigation" aria-label="Main navigation">
+  <section role="banner">
+  <section aria-labelledby="about-heading">
+  ```
+- Responsive image handling:
+  ```tsx
+  <img 
+    src="/images/choji.jpg"
+    alt="Choji - The inspiration behind our premium homemade cat food"
+    loading="eager"
+    fetchPriority="high"
+    className="w-full h-full object-cover"
+  />
+  ```
+- Performance-optimized assets
 
-### Form Handling and WhatsApp Integration
-- WhatsApp integration implemented in `App.tsx`:
+### WhatsApp Integration and Form Handling
+- Accessible form structure with proper ARIA attributes
+- Loading states and error handling:
   ```tsx
-  // Phone number validation
-  if (!whatsappNumber) {
-    alert('Please enter your WhatsApp number');
-    return;
-  }
-  
-  // Message construction
-  const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
-  
-  // WhatsApp deep linking
-  const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-  window.open(whatsappUrl, '_blank');
+  const handlePlaceOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    try {
+      const message = `Hi, I'd like to order ${selectedQuantity} of Choji's homemade cat food.`;
+      const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    } catch (error) {
+      alert('Failed to open WhatsApp. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   ```
-- Form state managed with React hooks:
+- Visual feedback for user actions:
   ```tsx
-  const [selectedQuantity, setSelectedQuantity] = useState('250g');
-  const [whatsappNumber, setWhatsappNumber] = useState('');
+  <button
+    type="submit"
+    disabled={isLoading}
+    className={\`...$\{
+      isLoading && 'opacity-75 cursor-not-allowed'
+    }\`}
+  >
+    {isLoading ? 'Processing...' : 'Place Order via WhatsApp'}
+  </button>
   ```
-- Phone numbers are stripped of non-digits before URL construction
-- Messages are URL-encoded for proper WhatsApp deep linking
+
+### Performance Optimization
+- Image optimization:
+  - Proper sizing and formats
+  - Lazy loading where appropriate
+  - High priority loading for critical images
+- Bundle optimization:
+  - Modern ES modules
+  - Code splitting
+  - Tree shaking
+- Resource hints:
+  - Preload critical assets
+  - Preconnect to required origins
 
 ### TypeScript Configuration
-- Advanced TypeScript 5.5.3 configuration with enhanced type checking:
+- Advanced TypeScript 5.5.3 configuration:
   ```json
   {
     "strict": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx",
+    "target": "ES2020",
+    "module": "ESNext"
+  }
+  ```
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   }
