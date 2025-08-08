@@ -1,6 +1,15 @@
 // Cookie consent management using vanilla-cookieconsent
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import * as CookieConsent from 'vanilla-cookieconsent';
+import type { CookieValue } from 'vanilla-cookieconsent';
+
+// Type definitions for gtag consent
+type GtagConsentParams = {
+  analytics_storage?: 'granted' | 'denied';
+  ad_storage?: 'granted' | 'denied';
+  ad_user_data?: 'granted' | 'denied';
+  ad_personalization?: 'granted' | 'denied';
+};
 
 export const initCookieConsent = () => {
   CookieConsent.run({
@@ -85,18 +94,19 @@ export const initCookieConsent = () => {
   });
 };
 
-const handleConsentChange = (cookie: any) => {
-  const { categories } = cookie;
+const handleConsentChange = (cookie: CookieValue) => {
+  // CookieValue.categories is an array of accepted category names
+  const acceptedCategories = cookie.categories || [];
   
   // Handle analytics consent
-  if (categories.analytics) {
+  if (acceptedCategories.includes('analytics')) {
     enableAnalytics();
   } else {
     disableAnalytics();
   }
   
   // Handle marketing consent
-  if (categories.marketing) {
+  if (acceptedCategories.includes('marketing')) {
     enableMarketing();
   } else {
     disableMarketing();
@@ -169,9 +179,5 @@ export const hasConsent = (category: string) => {
   return CookieConsent.acceptedCategory(category);
 };
 
-// Declare global types
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-  }
-}
+// Declare global gtag function for consent management
+declare const gtag: ((command: 'consent', action: 'update', params: GtagConsentParams) => void) | undefined;

@@ -1,8 +1,13 @@
 // Analytics and monitoring utilities
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import { getCLS, getFID, getFCP, getLCP, getTTFB, Metric } from 'web-vitals';
+
+// Type definitions for analytics
+type AnalyticsParameters = Record<string, string | number | boolean>;
+type GtagCommand = 'config' | 'event' | 'set';
+type GtagArgs = [GtagCommand, string, AnalyticsParameters?] | [GtagCommand, string];
 
 // Web Vitals reporting
-export const reportWebVitals = (onPerfEntry?: (metric: any) => void) => {
+export const reportWebVitals = (onPerfEntry?: (metric: Metric) => void) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     getCLS(onPerfEntry);
     getFID(onPerfEntry);
@@ -13,7 +18,7 @@ export const reportWebVitals = (onPerfEntry?: (metric: any) => void) => {
 };
 
 // Send web vitals to analytics
-export const sendToAnalytics = (metric: any) => {
+export const sendToAnalytics = (metric: Metric) => {
   // Send to Google Analytics 4 if available
   if (typeof gtag !== 'undefined') {
     gtag('event', metric.name, {
@@ -40,14 +45,14 @@ export const sendToAnalytics = (metric: any) => {
 };
 
 // Google Analytics 4 helper functions
-export const gtag = (...args: any[]) => {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag(...args);
+export const gtag = (...args: GtagArgs) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag(...args);
   }
 };
 
 // Track custom events
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+export const trackEvent = (eventName: string, parameters?: AnalyticsParameters) => {
   // Google Analytics 4
   gtag('event', eventName, parameters);
   
@@ -109,10 +114,17 @@ export const trackError = (error: Error, context?: string) => {
 // Declare global types for TypeScript
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    gtag: (...args: GtagArgs) => void;
     umami: {
-      track: (event: string, data?: Record<string, any>) => void;
+      track: (event: string, data?: AnalyticsParameters) => void;
     };
-    clarity: (...args: any[]) => void;
+    clarity: (command: string, ...args: (string | AnalyticsParameters)[]) => void;
   }
+  
+  // Global variables that might be available
+  const umami: {
+    track: (event: string, data?: AnalyticsParameters) => void;
+  } | undefined;
+  
+  const clarity: ((command: string, ...args: (string | AnalyticsParameters)[]) => void) | undefined;
 }

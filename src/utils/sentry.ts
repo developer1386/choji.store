@@ -41,7 +41,7 @@ export const initSentry = () => {
 export const SentryErrorBoundary = Sentry.withErrorBoundary;
 
 // Manual error reporting
-export const captureError = (error: Error, context?: Record<string, any>) => {
+export const captureError = (error: Error, context?: Record<string, string | number | boolean>) => {
   Sentry.withScope((scope) => {
     if (context) {
       scope.setContext('additional_info', context);
