@@ -39,7 +39,7 @@ const urlsToCache = [
   '/index.html',               // Main HTML document
   '/logo/logo.svg',            // Primary brand logo
   '/logo/logo-footer.svg',     // Footer logo variant
-  '/images/choji.jpg',         // Hero image (Choji's photo)
+  '/images/choji.webp',         // Hero image (Choji's photo)
   '/favicon/favicon.svg',      // Scalable favicon
   '/favicon/favicon.ico'       // Fallback favicon
 ];

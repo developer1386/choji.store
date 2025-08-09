@@ -333,7 +333,7 @@ function App() {
             <div className="bg-gradient-to-br from-orange-100 to-green-100 rounded-2xl p-4">
               <div className="relative w-full pb-[100%]">
                 <img 
-                  src="/images/choji.jpg" 
+                  src="/images/choji.webp" 
                   alt="Choji - The inspiration behind our premium homemade cat food"
                   className="absolute inset-0 w-full h-full object-cover rounded-xl"
                   loading="eager"

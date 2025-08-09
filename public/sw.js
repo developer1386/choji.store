@@ -34,7 +34,7 @@ const urlsToCache = [
   '/index.html',             // Main HTML file
   '/logo/logo.svg',          // Primary branding
   '/logo/logo-footer.svg',   // Footer branding
-  '/images/choji.jpg',       // Hero image
+  '/images/choji.webp',       // Hero image
   '/favicon/favicon.svg',    // Vector favicon
   '/favicon/favicon.ico'     // Legacy favicon
 ];
