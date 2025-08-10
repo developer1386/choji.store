@@ -98,49 +98,32 @@ export const initSentry = () => {
     environment: import.meta.env.MODE || 'development',
     integrations: [
       new Sentry.BrowserTracing({
-        // Set tracing origins to connect sentry for performance monitoring
         tracePropagationTargets: ['localhost', /^https:\/\/choji\.store\/api/],
       }),
       new Sentry.Replay({
-        // Capture 10% of all sessions,
-        // plus 100% of sessions with an error
         sessionSampleRate: 0.1,
         errorSampleRate: 1.0,
       }),
     ],
-    // Performance Monitoring
     tracesSampleRate: import.meta.env.PROD ? 0.1 : 1.0,
-    // Release Health
     autoSessionTracking: true,
-    /**
-     * Error Filtering and Processing
-     * 
-     * Filters out non-critical errors in production to reduce noise
-     * and focus on actionable issues. This function processes each
-     * error before sending it to Sentry servers.
-     * 
-     * Filtering Logic:
-     * - ChunkLoadError: Common in code-split applications
-     * - ResizeObserver errors: Browser-specific, non-critical
-     * - Development: All errors are sent for debugging
-     * - Production: Only critical errors are reported
-     * 
-     * @param {Event} event - Sentry event object
-     * @returns {Event|null} Processed event or null to discard
-     */
     beforeSend(event) {
-      // Filter out non-critical errors in production
       if (import.meta.env.PROD) {
         if (event.exception) {
           const error = event.exception.values?.[0];
           if (error?.type === 'ChunkLoadError' || error?.type === 'ResizeObserver loop limit exceeded') {
-            return null; // Don't send these common, non-critical errors
+            return null;
           }
         }
       }
       return event;
     },
+    debug: true, // ✅ TEMP: Show detailed Sentry logs in console
   });
+
+  // ✅ TEMP: confirm DSN and client
+  console.log('Sentry DSN:', import.meta.env.VITE_SENTRY_DSN);
+  console.log('Sentry client initialized?', !!Sentry.getCurrentHub().getClient());
 };
 
 /**
