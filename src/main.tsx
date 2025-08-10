@@ -71,6 +71,28 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';  // Global styles and Tailwind imports
 
+import { initSentry, SentryErrorBoundary } from './utils/sentry';
+
+// initialize Sentry before React renders
+initSentry();
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    {/* Optional: wrap to capture React render errors */}
+    <SentryErrorBoundary
+      fallback={({ error, resetError }) => (
+        <div style={{ padding: 16 }}>
+          <h2>Something went wrong.</h2>
+          <pre style={{ whiteSpace: 'pre-wrap' }}>{String(error)}</pre>
+          <button onClick={resetError}>Try again</button>
+        </div>
+      )}
+    >
+      <App />
+    </SentryErrorBoundary>
+  </StrictMode>
+);
+
 // Initialize React 18 app with Strict Mode for additional development checks
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
