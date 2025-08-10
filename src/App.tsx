@@ -320,7 +320,7 @@ function App() {
             </div>
 
             {/* 🔧 TEMP: Test Sentry Button */}
-            <button
+            {/* <button
               onClick={() =>
                 captureError(new Error("🔥 Sentry test error (manual) 🔥"), {
                   page: "Hero",
@@ -331,7 +331,7 @@ function App() {
               aria-label="Send a test error to Sentry"
             >
               Test Sentry
-            </button>
+            </button> */}
           </div>
         </div>
       </section>
