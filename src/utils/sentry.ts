@@ -94,7 +94,7 @@ import * as Sentry from '@sentry/react';
  */
 export const initSentry = () => {
   Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN || '', // Add your Sentry DSN to .env
+    dsn: 'https://2787ba7f3afde064ba091e1efccfb8a5@o4509810371788800.ingest.us.sentry.io/4509820187639808',
     environment: import.meta.env.MODE || 'development',
     integrations: [
       new Sentry.BrowserTracing({
