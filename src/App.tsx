@@ -103,7 +103,6 @@ import {
   Cat,
   ArrowDown,
 } from "lucide-react";
-import { captureError } from "./utils/sentry";
 
 function App() {
   // Application state management using React hooks
