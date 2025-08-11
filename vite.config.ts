@@ -72,9 +72,10 @@
  * - Secure asset handling
  * - Environment variable protection
  * 
- * @see {@link https://vitejs.dev/config/ Vite Configuration}
- * @see {@link https://vitejs.dev/guide/features.html Vite Features}
- * @see {@link https://github.com/vitejs/vite/tree/main/packages/plugin-react React Plugin}
+ * References:
+ * @see {@link https://vitejs.dev/config/} - Core Vite configuration options
+ * @see {@link https://vitejs.dev/guide/features.html} - Available Vite features
+ * @see {@link https://github.com/vitejs/vite/tree/main/packages/plugin-react} - React plugin documentation
  */
 
 import { defineConfig } from 'vite';
