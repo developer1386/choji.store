@@ -78,12 +78,63 @@
  * @see {@link https://github.com/vitejs/vite/tree/main/packages/plugin-react} - React plugin documentation
  */
 
+/**
+ * @fileoverview Vite Configuration for Choji Store
+ * 
+ * This configuration file sets up the development and production build
+ * environment for the Choji Store e-commerce platform. It includes settings
+ * for performance optimization, development tools, and production builds.
+ * 
+ * Features:
+ * - TypeScript support
+ * - React optimization
+ * - Asset handling
+ * - Development server
+ * - Build optimization
+ * - Testing setup
+ * 
+ * @see {@link https://vitejs.dev/config/}
+ */
+
+/**
+ * Vite Configuration for Choji Cat Food Store
+ * 
+ * This configuration file sets up the Vite build tool with optimal settings
+ * for the React TypeScript application. It includes plugin configurations,
+ * build optimizations, and development server settings.
+ * 
+ * Key Features:
+ * 1. React Integration:
+ *    - Fast Refresh support
+ *    - JSX transformation
+ *    - React-specific optimizations
+ * 
+ * 2. Build Optimization:
+ *    - Tree-shaking
+ *    - Code splitting
+ *    - Asset optimization
+ *    - Bundle size reduction
+ * 
+ * 3. Development Experience:
+ *    - Hot Module Replacement (HMR)
+ *    - Source maps
+ *    - Error overlay
+ *    - Fast startup and rebuilds
+ * 
+ * @see {@link https://vitejs.dev/config/ Vite Configuration Reference}
+ */
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    // Add React Fast Refresh support
+    react(),
+  ],
   optimizeDeps: {
+    // Exclude lucide-react from dependency optimization
+    // This is needed because it's tree-shakeable and bundled correctly by default
     exclude: ['lucide-react'],
   },
 });

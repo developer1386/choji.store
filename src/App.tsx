@@ -92,7 +92,35 @@
  * @see {@link https://choji.store Live Site}
  */
 
-import React, { useState } from "react";
+/**
+ * @fileoverview Main Application Component
+ * 
+ * This is the root component for the Choji Store application. It handles:
+ * - Application layout and structure
+ * - Global state management
+ * - Routing and navigation
+ * - Theme and styling
+ * - Error boundaries
+ * 
+ * Key Features:
+ * - Responsive design with Tailwind CSS
+ * - SEO optimization with structured data
+ * - WhatsApp integration for orders
+ * - Analytics and tracking
+ * - Cookie consent management
+ * 
+ * Component Tree:
+ * - App
+ *   ├── Header
+ *   ├── Hero
+ *   ├── Products
+ *   ├── Features
+ *   ├── Testimonials
+ *   ├── Contact
+ *   └── Footer
+ */
+
+import { useState } from 'react'
 import {
   Heart,
   Leaf,

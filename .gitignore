@@ -1,4 +1,7 @@
-# Logs
+# Choji Store .gitignore
+# Specifies which files Git should ignore
+
+# Development logs and debugging files
 logs
 *.log
 npm-debug.log*

@@ -54,7 +54,48 @@
  * @see {@link https://docs.sentry.io/product/session-replay/ Session Replay}
  */
 
-import * as Sentry from '@sentry/react';
+/**
+ * Sentry Error Monitoring and Performance Tracking
+ * 
+ * This module configures and initializes Sentry for error monitoring, crash reporting,
+ * and performance tracking in the Choji Cat Food Store application. It provides comprehensive
+ * error tracking, performance monitoring, and debugging capabilities.
+ * 
+ * Key Features:
+ * 1. Error Monitoring:
+ *    - Real-time error tracking
+ *    - Stack trace analysis
+ *    - Error grouping and prioritization
+ *    - Custom error contexts
+ * 
+ * 2. Performance Monitoring:
+ *    - Transaction tracking
+ *    - Performance bottleneck detection
+ *    - Resource load timing
+ *    - Custom performance marks
+ * 
+ * 3. Release Tracking:
+ *    - Source map integration
+ *    - Release versioning
+ *    - Deploy tracking
+ *    - Code ownership
+ * 
+ * 4. User Context:
+ *    - User identification
+ *    - Session tracking
+ *    - Custom user attributes
+ *    - User feedback collection
+ * 
+ * 5. Environment Management:
+ *    - Environment segregation
+ *    - Configuration per environment
+ *    - Sampling rates
+ *    - Error filtering
+ * 
+ * @module sentry
+ */
+
+import * as Sentry from "@sentry/react";
 
 /**
  * Initialize Sentry Error Monitoring System
