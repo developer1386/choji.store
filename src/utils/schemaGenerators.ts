@@ -65,18 +65,22 @@ export function generateOrganizationSchema(config?: OrganizationConfig): Organiz
     ],
   };
 
+  // Schema URLs will never be undefined due to default values
+  const url = schema.url!;
+  const logo = schema.logo!;
+
   // Validate URLs
-  if (!isValidUrl(schema.url)) {
-    throw new InvalidUrlError(schema.url);
+  if (!isValidUrl(url)) {
+    throw new InvalidUrlError(url);
   }
-  if (!isValidUrl(schema.logo)) {
-    throw new InvalidUrlError(schema.logo);
+  if (!isValidUrl(logo)) {
+    throw new InvalidUrlError(logo);
   }
 
   // Validate social media URLs
-  schema.sameAs?.forEach(url => {
-    if (!isValidUrl(url)) {
-      throw new InvalidUrlError(url);
+  schema.sameAs?.forEach(socialUrl => {
+    if (!isValidUrl(socialUrl)) {
+      throw new InvalidUrlError(socialUrl);
     }
   });
 
@@ -180,8 +184,11 @@ export function generateWebsiteSchema(config?: WebsiteConfig): WebsiteSchema {
     description: config?.description ?? 'Premium homemade cat food with natural ingredients',
   };
 
-  if (!isValidUrl(schema.url)) {
-    throw new InvalidUrlError(schema.url);
+  // URL will never be undefined due to default value
+  const url = schema.url!;
+
+  if (!isValidUrl(url)) {
+    throw new InvalidUrlError(url);
   }
 
   return schema;
