@@ -1,0 +1,45 @@
+# Choji Store Git Attributes
+# Configures how Git handles certain file types
+
+# Auto detect text files and normalize line endings
+* text=auto eol=lf
+
+# Source code
+*.ts    text diff=typescript
+*.tsx   text diff=typescript
+*.js    text
+*.jsx   text
+*.css   text diff=css
+*.html  text diff=html
+*.json  text
+*.md    text diff=markdown
+*.yml   text
+*.yaml  text
+
+# Documentation
+*.md       text diff=markdown
+*.mdx      text diff=markdown
+*.txt      text
+*.rst      text
+*.pdf      binary
+
+# Graphics and media
+*.png      binary
+*.jpg      binary
+*.gif      binary
+*.ico      binary
+*.svg      text
+*.webp     binary
+
+# Fonts
+*.ttf      binary
+*.eot      binary
+*.woff     binary
+*.woff2    binary
+
+# Ignore files (like .gitignore) and CI config files
+.gitignore      text
+.gitattributes  text
+.eslintignore   text
+.prettierignore text
+*.lock          text -diff

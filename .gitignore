@@ -1,8 +1,15 @@
 # Choji Store .gitignore
 # Specifies which files Git should ignore
 
+# Dependencies and build output
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+
 # Development logs and debugging files
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -10,9 +17,17 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Cache directories
+.cache/
+.npm/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Environment and local files
+.env
+.env.local
+.env.*.local
 *.local
 
 # Editor directories and files
