@@ -97,6 +97,13 @@ createRoot(document.getElementById("root")!).render(
       <App />
     </SentryErrorBoundary>
   </StrictMode>
+);~
+
+// Initialize React 18 app with Strict Mode for additional development checks
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
 );
 
 // Register Service Worker
