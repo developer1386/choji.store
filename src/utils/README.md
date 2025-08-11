@@ -1,6 +1,15 @@
 # 🛠️ Utilities Documentation
 
-This directory contains utility functions and modules used throughout the Choji Store application.
+This directory contains utility functions and modules used throughout the Choji Store application. These utilities handle critical functionality including SEO optimization, analytics tracking, error handling, and user privacy compliance.
+
+## 🎯 Overview
+
+The utilities in this directory are designed to:
+- Enhance SEO through structured data and schema generation
+- Implement privacy-focused analytics and tracking
+- Manage user consent and cookie preferences
+- Handle errors and validation consistently
+- Provide type-safe interfaces and data structures
 
 ## 📁 Directory Structure
 

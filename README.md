@@ -1,8 +1,14 @@
 # Choji.store 🐱
 
-> Premium homemade cat food e-commerce platform built with modern web technologies.
+> Elevating feline nutrition with premium homemade cat food - crafted with love, delivered with care.
 
-[![TypeScript](https://img.## 📁 Project Structure
+![Build Status](https://img.shields.io/github/workflow/status/usamaejaz9741/choji.store/CI)
+![Last Commit](https://img.shields.io/github/last-commit/usamaejaz9741/choji.store)
+![License](https://img.shields.io/github/license/usamaejaz9741/choji.store)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fchoji.store)](https://choji.store)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+
+## 📁 Project Structure
 
 ```bash
 ├── public/              # Static assets
