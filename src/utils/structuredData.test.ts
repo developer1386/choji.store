@@ -50,7 +50,6 @@ describe('generateProductSchema', () => {
     expect(rating).toBeGreaterThanOrEqual(0);
     expect(rating).toBeLessThanOrEqual(5);
   });
-});
 
   // Test custom values
   it('accepts custom values for all fields', () => {
@@ -96,7 +95,7 @@ describe('generateProductSchema', () => {
       },
     });
   });
-
+});
 describe('generateOrganizationSchema', () => {
   it('returns organization schema with required fields', () => {
     const schema = generateOrganizationSchema();
