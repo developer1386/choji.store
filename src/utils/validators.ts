@@ -11,8 +11,8 @@ import { VALID_AVAILABILITY_STATES, VALID_CURRENCIES, type AvailabilityState, ty
  */
 export const isValidUrl = (url: string): boolean => {
   try {
-    new URL(url);
-    return true;
+    const parsedUrl = new URL(url);
+    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
   } catch {
     return false;
   }
@@ -52,6 +52,10 @@ export const isValidRating = (rating: string): boolean => {
  * @returns true if valid, false otherwise
  */
 export const isValidReviewCount = (count: string): boolean => {
+  // Check if the string contains only digits
+  if (!/^\d+$/.test(count)) {
+    return false;
+  }
   const numericCount = parseInt(count, 10);
-  return !isNaN(numericCount) && numericCount >= 0;
+  return numericCount >= 0;
 };
