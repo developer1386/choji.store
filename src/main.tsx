@@ -72,6 +72,7 @@ import App from "./App.tsx";
 import "./index.css"; // Global styles and Tailwind imports
 
 import * as Sentry from "@sentry/react";
+import type { FallbackRender } from "@sentry/react";
 import { initSentry } from "./utils/sentry";
 import { initCookieConsent } from "./utils/cookieConsent";
 import { reportWebVitals, sendToAnalytics } from "./utils/analytics";
@@ -83,17 +84,20 @@ initCookieConsent();
 
 reportWebVitals(sendToAnalytics);
 
-// Create error-handled app component
-const ErrorFallback = ({ error, resetError }: { error: Error; resetError: () => void }) => (
-  <div style={{ padding: 16 }}>
-    <h2>Something went wrong.</h2>
-    <pre style={{ whiteSpace: "pre-wrap" }}>{error.message}</pre>
-    <button onClick={resetError}>Try again</button>
-  </div>
-);
+// export so Fast Refresh rule is happy
+export const ErrorFallback: FallbackRender = ({ error, resetError }) => {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    <div style={{ padding: 16 }}>
+      <h2>Something went wrong.</h2>
+      <pre style={{ whiteSpace: "pre-wrap" }}>{message}</pre>
+      <button onClick={resetError}>Try again</button>
+    </div>
+  );
+};
 
-const AppWithErrorBoundary = Sentry.withErrorBoundary(App, {
-  fallback: ErrorFallback
+export const AppWithErrorBoundary = Sentry.withErrorBoundary(App, {
+  fallback: ErrorFallback,
 });
 
 createRoot(document.getElementById("root")!).render(
