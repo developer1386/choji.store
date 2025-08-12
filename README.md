@@ -53,13 +53,18 @@
 
 ### Important Files
 
-- **`src/App.tsx`**: Main application component
-- **`src/main.tsx`**: Application entry point
-- **`src/utils/schemaGenerators.ts`**: SEO schema generation
-- **`public/sw.js`**: Service worker implementationdge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+- **`src/App.tsx`** — Main application component
+- **`src/main.tsx`** — Application entry point
+- **`src/utils/schemaGenerators.ts`** — SEO schema generation
+- **`public/sw.js`** — Service worker implementation
+
+### Tech Stack
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+
 
 Premium natural homemade cat food e-commerce landing page built with React, TypeScript, and Tailwind CSS. Features WhatsApp integration for seamless ordering and SEO-optimized content structure.
 
