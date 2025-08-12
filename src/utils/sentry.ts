@@ -137,34 +137,40 @@ export const initSentry = () => {
   Sentry.init({
     dsn: 'https://6c0941cad5e70e813b4913cebac4c8fc@o4509810371788800.ingest.us.sentry.io/4509820215230464',
     environment: import.meta.env.MODE || 'development',
+
+    // ✅ Put it here (top-level), not inside browserTracingIntegration
+    tracePropagationTargets: ['localhost', /^https:\/\/choji\.store\/api/],
+
+    // ✅ Replay sampling is top-level in v8+
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+
     integrations: [
-      new Sentry.BrowserTracing({
-        tracePropagationTargets: ['localhost', /^https:\/\/choji\.store\/api/],
-      }),
-      new Sentry.Replay({
-        sessionSampleRate: 0.1,
-        errorSampleRate: 1.0,
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration({
+        // optional privacy options here, e.g. maskAllText: true
       }),
     ],
+
     tracesSampleRate: import.meta.env.PROD ? 0.1 : 1.0,
-    autoSessionTracking: true,
+
+    // ❌ remove in v9+: autoSessionTracking
+    // autoSessionTracking: true,
+
     beforeSend(event) {
       if (import.meta.env.PROD) {
-        if (event.exception) {
-          const error = event.exception.values?.[0];
-          if (error?.type === 'ChunkLoadError' || error?.type === 'ResizeObserver loop limit exceeded') {
-            return null;
-          }
+        const err = event.exception?.values?.[0];
+        if (err?.type === 'ChunkLoadError' || err?.type === 'ResizeObserver loop limit exceeded') {
+          return null;
         }
       }
       return event;
     },
-    debug: true, // ✅ TEMP: Show detailed Sentry logs in console
+    debug: true,
   });
 
-  // ✅ TEMP: confirm DSN and client
   console.log('Sentry DSN:', import.meta.env.VITE_SENTRY_DSN);
-  console.log('Sentry client initialized?', !!Sentry.getCurrentHub().getClient());
+  console.log('Sentry client initialized?', !!Sentry.getClient());
 };
 
 /**
@@ -292,7 +298,18 @@ export const captureError = (error: Error, context?: Record<string, string | num
  * apiTransaction.finish();
  */
 export const startTransaction = (name: string, operation: string) => {
-  return Sentry.startTransaction({ name, op: operation });
+  // Creates a root span if none exists and lets you end it manually.
+  const span = Sentry.startSpanManual(
+    { name, op: operation, forceTransaction: true },
+    // The callback receives the span; we just return it so callers can keep a handle.
+    (s) => s
+  );
+
+  // Backwards-compatible "finish" method (was tx.finish() before)
+  // so you don't have to touch existing call sites.
+  return Object.assign(span, {
+    finish: () => span.end(),
+  });
 };
 
 /**
