@@ -276,18 +276,20 @@ export const gtag = (...args: GtagArgs) => {
  *   items: 3
  * });
  */
-export const trackEvent = (eventName: string, parameters?: AnalyticsParameters) => {
-  // Google Analytics 4
-  gtag('event', eventName, parameters);
-  
-  // Umami
-  if (typeof umami !== 'undefined') {
-    umami.track(eventName, parameters);
+const WEBSITE_ID = import.meta.env.VITE_UMAMI_WEBSITE_ID || '';
+
+export const trackEvent = async (eventName: string, parameters?: AnalyticsParameters) => {
+  if (!eventName) {
+    throw new Error('Event name is required');
   }
-  
-  // Microsoft Clarity custom tags
-  if (typeof clarity !== 'undefined') {
-    clarity('set', eventName, parameters ? JSON.stringify(parameters) : 'true');
+
+  try {
+    await window.umami?.track(eventName, {
+      ...parameters,
+      websiteId: WEBSITE_ID
+    });
+  } catch (error) {
+    console.error('Analytics Error:', error);
   }
 };
 
@@ -317,17 +319,17 @@ export const trackEvent = (eventName: string, parameters?: AnalyticsParameters) 
  * // SPA navigation tracking
  * trackPageView('/order-form', 'Order Form - Choji Store');
  */
-export const trackPageView = (url: string, title?: string) => {
-  // Google Analytics 4
-  const pageParams: AnalyticsParameters = {
-    page_location: url,
-  };
-  
-  if (title) {
-    pageParams.page_title = title;
+export const trackPageView = async (url: string, referrer?: string) => {
+  if (!url) {
+    throw new Error('URL is required');
   }
-  
-  gtag('config', 'GA_MEASUREMENT_ID', pageParams);
+
+  // Track with Umami
+  await window.umami?.track('pageview', {
+    url,
+    referrer: referrer || '',
+    websiteId: WEBSITE_ID
+  });
   
   // Umami (automatically tracks page views)
   // Microsoft Clarity (automatically tracks page views)

@@ -1,10 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { trackPageView, trackEvent } from './analytics';
 
-// Set up DOM environment mock
-const mockWindow = {
+// Set up DOM environment mock with type safety
+interface MockWindow {
+  umami: {
+    track: ReturnType<typeof vi.fn>;
+  };
+  location: {
+    href: string;
+  };
+}
+
+const mockWindow: MockWindow = {
   umami: {
     track: vi.fn().mockResolvedValue(undefined)
+  },
+  location: {
+    href: 'http://localhost:3000/'
   }
 };
 
@@ -16,13 +28,11 @@ vi.mock('@umami/client', () => ({
   }
 }));
 
-// Create global objects
-vi.stubGlobal('window', mockWindow);
-vi.stubGlobal('umami', mockWindow.umami);
-
 describe('Analytics Tracking', () => {
   beforeEach(() => {
-    // Reset all mocks before each test
+    // Set up global objects and reset mocks
+    vi.stubGlobal('window', mockWindow);
+    vi.stubGlobal('umami', mockWindow.umami);
     vi.clearAllMocks();
     mockWindow.umami.track.mockClear();
   });
@@ -40,22 +50,29 @@ describe('Analytics Tracking', () => {
 
       await trackPageView(url, referrer);
 
-      expect(vi.mocked(window.umami?.track)).toHaveBeenCalledWith('pageview', {
+      expect(mockWindow.umami.track).toHaveBeenCalledTimes(1);
+      expect(mockWindow.umami.track).toHaveBeenCalledWith('pageview', {
         url,
         referrer,
         websiteId: expect.any(String)
       });
     });
 
-    it('handles missing referrer', async () => {
+    it('handles missing referrer by using empty string', async () => {
       const url = '/test-page';
-
+      
       await trackPageView(url);
 
-      expect(vi.mocked(window.umami?.track)).toHaveBeenCalledWith('pageview', {
+      expect(mockWindow.umami.track).toHaveBeenCalledWith('pageview', {
         url,
+        referrer: '',
         websiteId: expect.any(String)
       });
+    });
+
+    it('validates URL parameter', async () => {
+      await expect(trackPageView('')).rejects.toThrow('URL is required');
+      expect(mockWindow.umami.track).not.toHaveBeenCalled();
     });
   });
 
@@ -82,21 +99,15 @@ describe('Analytics Tracking', () => {
       });
     });
 
-    it('validates event names', () => {
-      expect(() => trackEvent('')).toThrow('Event name is required');
-      expect(() => {
-        // @ts-expect-error Testing invalid input type
-        trackEvent(undefined);
-      }).toThrow('Event name is required');
+    it('validates event name parameter', async () => {
+      await expect(trackEvent('')).rejects.toThrow('Event name is required');
+      expect(mockWindow.umami.track).not.toHaveBeenCalled();
     });
 
     it('handles tracking errors gracefully', async () => {
-      // Mock tracking error
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockWindow.umami.track.mockRejectedValueOnce(new Error('Tracking failed'));
 
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
-      // Should not throw but log error
       await trackEvent('test_event');
       
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -108,3 +119,81 @@ describe('Analytics Tracking', () => {
     });
   });
 });
+
+describe('Analytics Tracking', () => {
+  beforeEach(() => {
+    // Reset all mocks before each test
+    vi.clearAllMocks();
+    mockWindow.umami.track.mockClear();
+  });
+
+  afterEach(() => {
+    // Clean up globals
+    vi.unstubAllGlobals();
+    vi.resetModules();
+  });
+
+  describe('trackPageView', () => {
+    it('tracks page views with correct parameters', async () => {
+      const url = '/test-page';
+      const referrer = 'https://example.com';
+
+      await trackPageView(url, referrer);
+
+      expect(mockWindow.umami.track).toHaveBeenCalledTimes(1);
+      expect(mockWindow.umami.track).toHaveBeenCalledWith('pageview', {
+        url,
+        referrer,
+        websiteId: expect.any(String)
+      });
+    });
+
+    it('handles missing referrer by using empty string', async () => {
+      const url = '/test-page';
+      
+      await trackPageView(url);
+
+      expect(mockWindow.umami.track).toHaveBeenCalledWith('pageview', {
+        url,
+        referrer: '',
+        websiteId: expect.any(String)
+      });
+    });
+
+    it('validates URL parameter', async () => {
+      await expect(trackPageView('')).rejects.toThrow('URL is required');
+      expect(mockWindow.umami.track).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('trackEvent', () => {
+    it('tracks events with correct parameters', async () => {
+      const eventName = 'test_event';
+      const data = { key: 'value' };
+
+      await trackEvent(eventName, data);
+
+      expect(mockWindow.umami.track).toHaveBeenCalledTimes(1);
+      expect(mockWindow.umami.track).toHaveBeenCalledWith(eventName, {
+        ...data,
+        websiteId: expect.any(String)
+      });
+    });
+
+    it('handles events without data', async () => {
+      const eventName = 'test_event';
+
+      await trackEvent(eventName);
+
+      expect(mockWindow.umami.track).toHaveBeenCalledWith(eventName, {
+        websiteId: expect.any(String)
+      });
+    });
+
+    it('validates event name parameter', async () => {
+      await expect(trackEvent('')).rejects.toThrow('Event name is required');
+      expect(mockWindow.umami.track).not.toHaveBeenCalled();
+    });
+  });
+});
+
