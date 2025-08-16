@@ -278,16 +278,27 @@ export const gtag = (...args: GtagArgs) => {
  */
 const WEBSITE_ID = import.meta.env.VITE_UMAMI_WEBSITE_ID || '';
 
+/**
+ * Safely checks if we're in a browser environment and have Umami available
+ */
+const isUmamiAvailable = (): boolean => {
+  return typeof window !== 'undefined' && 
+         typeof window.umami !== 'undefined' && 
+         typeof window.umami.track === 'function';
+};
+
 export const trackEvent = async (eventName: string, parameters?: AnalyticsParameters) => {
   if (!eventName) {
     throw new Error('Event name is required');
   }
 
   try {
-    await window.umami?.track(eventName, {
-      ...parameters,
-      websiteId: WEBSITE_ID
-    });
+    if (isUmamiAvailable()) {
+      await window.umami.track(eventName, {
+        ...parameters,
+        websiteId: WEBSITE_ID
+      });
+    }
   } catch (error) {
     console.error('Analytics Error:', error);
   }
@@ -324,12 +335,17 @@ export const trackPageView = async (url: string, referrer?: string) => {
     throw new Error('URL is required');
   }
 
-  // Track with Umami
-  await window.umami?.track('pageview', {
-    url,
-    referrer: referrer || '',
-    websiteId: WEBSITE_ID
-  });
+  try {
+    if (isUmamiAvailable()) {
+      await window.umami.track('pageview', {
+        url,
+        referrer: referrer || '',
+        websiteId: WEBSITE_ID
+      });
+    }
+  } catch (error) {
+    console.error('Analytics Error:', error);
+  }
   
   // Umami (automatically tracks page views)
   // Microsoft Clarity (automatically tracks page views)
