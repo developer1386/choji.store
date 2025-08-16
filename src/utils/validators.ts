@@ -156,12 +156,14 @@ const _isValidReviewCount = (count: string): boolean => {
   if (typeof count !== 'string') {
     throw new TypeError('Review count must be a string');
   }
-  // Check if the string contains only digits
-  if (!/^\d+$/.test(count)) {
-    return false;
-  }
+
+  // Check for invalid formats first
+  if (/[^0-9]/.test(count)) return false; // Only digits allowed
+  if (count.startsWith('0') && count.length > 1) return false; // No leading zeros
+  if (count.length > 10) return false; // Reasonable length limit
+
   const numericCount = parseInt(count, 10);
-  return numericCount >= 0;
+  return !isNaN(numericCount) && numericCount >= 0;
 };
 
 export const isValidReviewCount = memoizeValidator<string, boolean>(_isValidReviewCount);
