@@ -200,7 +200,7 @@ git commit -m "feat: add your feature description"
 
 ## 📝 Commit Message Format
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for clear, semantic commit messages:
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specifications for clear, semantic commit messages:
 
 ### Commit Types
 
