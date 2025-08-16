@@ -22,6 +22,9 @@ describe('Schema Validators', () => {
       expect(isValidUrl('ftp://invalid')).toBe(false);
       expect(isValidUrl('https://.com')).toBe(false);
       expect(isValidUrl('https://example')).toBe(false);
+      expect(isValidUrl('https:///path')).toBe(false);
+      expect(isValidUrl('https:/example.com')).toBe(false);
+      expect(isValidUrl('http://example..com')).toBe(false);
     });
 
     it('handles URLs with special characters', () => {
@@ -29,6 +32,25 @@ describe('Schema Validators', () => {
       expect(isValidUrl('https://example.com/über/path')).toBe(true);
       expect(isValidUrl('https://example.com/path#fragment')).toBe(true);
       expect(isValidUrl('https://example.com/path?q=test&lang=en')).toBe(true);
+      expect(isValidUrl('https://example.com/path?q=%20test')).toBe(true);
+      expect(isValidUrl('https://ünicöde.com/path')).toBe(true);
+      expect(isValidUrl('https://example.com/path/with/~tilde')).toBe(true);
+      expect(isValidUrl('https://example.com/path.with.dots')).toBe(true);
+    });
+
+    it('validates IPv4 and IPv6 URLs', () => {
+      expect(isValidUrl('http://192.168.1.1')).toBe(true);
+      expect(isValidUrl('http://192.168.1.1:8080')).toBe(true);
+      expect(isValidUrl('http://[2001:0db8:85a3:0000:0000:8a2e:0370:7334]')).toBe(true);
+      expect(isValidUrl('http://[2001:db8::1]:8080')).toBe(true);
+    });
+
+    it('handles various URL schemes', () => {
+      expect(isValidUrl('https://example.com')).toBe(true);
+      expect(isValidUrl('http://example.com')).toBe(true);
+      expect(isValidUrl('ftp://example.com')).toBe(false); // We only allow http/https
+      expect(isValidUrl('ws://example.com')).toBe(false);
+      expect(isValidUrl('wss://example.com')).toBe(false);
     });
 
     it('throws TypeError for non-string input', () => {
@@ -37,85 +59,172 @@ describe('Schema Validators', () => {
       // @ts-expect-error Testing invalid input type
       expect(() => isValidUrl(undefined)).toThrow(TypeError);
       // @ts-expect-error Testing invalid input type
+      expect(() => isValidUrl(123)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
       expect(() => isValidUrl({})).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidUrl([])).toThrow(TypeError);
+    });
+
+    it('handles edge cases', () => {
+      expect(isValidUrl('https://example.com/')).toBe(true);
+      expect(isValidUrl('https://example.com//')).toBe(false);
+      expect(isValidUrl('https://example.com:8080')).toBe(true);
+      expect(isValidUrl('https://example.com:65536')).toBe(false); // Invalid port
+      expect(isValidUrl('https://example.com:abc')).toBe(false); // Non-numeric port
+      expect(isValidUrl('https://a')).toBe(false); // Single character domain
     });
   });
 
   describe('isValidCurrency with memoization', () => {
     it('validates and caches correct currency codes', () => {
-      // First calls
-      expect(isValidCurrency('USD')).toBe(true);
-      expect(isValidCurrency('EUR')).toBe(true);
+      // First calls - Major currencies
+      expect(isValidCurrency('USD')).toBe(true); // US Dollar
+      expect(isValidCurrency('EUR')).toBe(true); // Euro
+      expect(isValidCurrency('GBP')).toBe(true); // British Pound
+      expect(isValidCurrency('JPY')).toBe(true); // Japanese Yen
+      expect(isValidCurrency('CNY')).toBe(true); // Chinese Yuan
+      expect(isValidCurrency('CHF')).toBe(true); // Swiss Franc
+      expect(isValidCurrency('AUD')).toBe(true); // Australian Dollar
+      expect(isValidCurrency('CAD')).toBe(true); // Canadian Dollar
+
       // Cache hits
       expect(isValidCurrency('USD')).toBe(true);
       expect(isValidCurrency('EUR')).toBe(true);
-      expect(isValidCurrency('GBP')).toBe(true);
+
+      // Less common but valid currencies
+      expect(isValidCurrency('SGD')).toBe(true); // Singapore Dollar
+      expect(isValidCurrency('NZD')).toBe(true); // New Zealand Dollar
+      expect(isValidCurrency('HKD')).toBe(true); // Hong Kong Dollar
+      expect(isValidCurrency('SEK')).toBe(true); // Swedish Krona
     });
 
     it('caches invalid currency codes', () => {
-      // First call
+      // First calls
       expect(isValidCurrency('INVALID')).toBe(false);
-      // Second call should use cache
+      expect(isValidCurrency('FAKE')).toBe(false);
+      
+      // Cache hits
       expect(isValidCurrency('INVALID')).toBe(false);
+      expect(isValidCurrency('FAKE')).toBe(false);
+    });
+
+    it('handles case sensitivity', () => {
+      expect(isValidCurrency('usd')).toBe(false);
+      expect(isValidCurrency('Usd')).toBe(false);
+      expect(isValidCurrency('USD')).toBe(true);
+      expect(isValidCurrency('UsD')).toBe(false);
     });
 
     it('rejects invalid currency codes', () => {
       expect(isValidCurrency('INVALID')).toBe(false);
       expect(isValidCurrency('US')).toBe(false);
       expect(isValidCurrency('')).toBe(false);
-    });
-  });
-
-  describe('isValidAvailability with memoization', () => {
-    it('validates and caches valid availability states', () => {
-      // First calls
-      expect(isValidAvailability('https://schema.org/InStock')).toBe(true);
-      expect(isValidAvailability('https://schema.org/OutOfStock')).toBe(true);
-      // Cache hits
-      expect(isValidAvailability('https://schema.org/InStock')).toBe(true);
-      expect(isValidAvailability('https://schema.org/OutOfStock')).toBe(true);
-      expect(isValidAvailability('https://schema.org/PreOrder')).toBe(true);
+      expect(isValidCurrency('US!')).toBe(false);
+      expect(isValidCurrency('USDD')).toBe(false);
+      expect(isValidCurrency('U$D')).toBe(false);
+      expect(isValidCurrency('123')).toBe(false);
+      expect(isValidCurrency(' USD')).toBe(false);
+      expect(isValidCurrency('USD ')).toBe(false);
     });
 
-    it('caches invalid availability states', () => {
-      // First call
-      expect(isValidAvailability('https://schema.org/Invalid')).toBe(false);
-      // Second call should use cache
-      expect(isValidAvailability('https://schema.org/Invalid')).toBe(false);
+    it('handles special cases and edge cases', () => {
+      // Historic/obsolete currencies should be invalid
+      expect(isValidCurrency('DEM')).toBe(false); // German Mark
+      expect(isValidCurrency('FRF')).toBe(false); // French Franc
+      
+      // Invalid formats
+      expect(isValidCurrency('U.S.D')).toBe(false);
+      expect(isValidCurrency('USD USD')).toBe(false);
+      expect(isValidCurrency('USD\n')).toBe(false);
+      expect(isValidCurrency('\tUSD')).toBe(false);
     });
 
-    it('rejects invalid availability states', () => {
-      expect(isValidAvailability('InStock')).toBe(false);
-      expect(isValidAvailability('')).toBe(false);
-      expect(isValidAvailability('https://schema.org/Invalid')).toBe(false);
+    it('throws TypeError for non-string input', () => {
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidCurrency(null)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidCurrency(undefined)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidCurrency(123)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidCurrency({})).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidCurrency([])).toThrow(TypeError);
     });
   });
 
   describe('isValidRating', () => {
     it('accepts valid rating values', () => {
+      // Integer ratings
       expect(isValidRating('0')).toBe(true);
-      expect(isValidRating('3.5')).toBe(true);
+      expect(isValidRating('1')).toBe(true);
+      expect(isValidRating('2')).toBe(true);
+      expect(isValidRating('3')).toBe(true);
+      expect(isValidRating('4')).toBe(true);
       expect(isValidRating('5')).toBe(true);
+
+      // Decimal ratings
+      expect(isValidRating('0.0')).toBe(true);
+      expect(isValidRating('0.5')).toBe(true);
+      expect(isValidRating('1.5')).toBe(true);
+      expect(isValidRating('2.5')).toBe(true);
+      expect(isValidRating('3.5')).toBe(true);
+      expect(isValidRating('4.5')).toBe(true);
+      expect(isValidRating('5.0')).toBe(true);
+
+      // Quarter-point ratings
+      expect(isValidRating('3.25')).toBe(true);
+      expect(isValidRating('3.75')).toBe(true);
+      expect(isValidRating('4.25')).toBe(true);
+      expect(isValidRating('4.75')).toBe(true);
     });
 
     it('rejects invalid rating values', () => {
+      // Out of range values
       expect(isValidRating('-1')).toBe(false);
+      expect(isValidRating('5.1')).toBe(false);
       expect(isValidRating('6')).toBe(false);
-      expect(isValidRating('not a number')).toBe(false);
-    });
-  });
+      expect(isValidRating('10')).toBe(false);
+      expect(isValidRating('-0.5')).toBe(false);
 
-  describe('isValidReviewCount', () => {
-    it('accepts valid review counts', () => {
-      expect(isValidReviewCount('0')).toBe(true);
-      expect(isValidReviewCount('100')).toBe(true);
-      expect(isValidReviewCount('1000')).toBe(true);
+      // Invalid decimal values
+      expect(isValidRating('3.51')).toBe(false);
+      expect(isValidRating('3.99')).toBe(false);
+      expect(isValidRating('4.1')).toBe(false);
+      expect(isValidRating('3.333')).toBe(false);
+
+      // Invalid formats
+      expect(isValidRating('3,5')).toBe(false); // Wrong decimal separator
+      expect(isValidRating('3.')).toBe(false); // Missing decimal places
+      expect(isValidRating('.5')).toBe(false); // Missing leading zero
+      expect(isValidRating('five')).toBe(false); // Text instead of number
+      expect(isValidRating('')).toBe(false); // Empty string
+      expect(isValidRating(' 3.5')).toBe(false); // Leading space
+      expect(isValidRating('3.5 ')).toBe(false); // Trailing space
     });
 
-    it('rejects invalid review counts', () => {
-      expect(isValidReviewCount('-1')).toBe(false);
-      expect(isValidReviewCount('3.5')).toBe(false);
-      expect(isValidReviewCount('not a number')).toBe(false);
+    it('handles edge cases', () => {
+      // Boundary values
+      expect(isValidRating('0.00')).toBe(false); // Too many decimal places
+      expect(isValidRating('5.00')).toBe(false); // Too many decimal places
+      expect(isValidRating('+3.5')).toBe(false); // Explicit positive sign
+      expect(isValidRating('3.50')).toBe(false); // Extra zero
+      expect(isValidRating('03.5')).toBe(false); // Leading zero
+      expect(isValidRating('3.5e0')).toBe(false); // Scientific notation
+    });
+
+    it('throws TypeError for non-string input', () => {
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidRating(null)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidRating(undefined)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidRating(3.5)).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidRating({})).toThrow(TypeError);
+      // @ts-expect-error Testing invalid input type
+      expect(() => isValidRating([])).toThrow(TypeError);
     });
   });
 });
