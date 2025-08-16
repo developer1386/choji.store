@@ -70,10 +70,9 @@ describe('Analytics Tracking', () => {
     });
 
     it('validates event names', async () => {
-      // @ts-expect-error Testing invalid input
       await expect(trackEvent('')).rejects.toThrow('Event name is required');
-      // @ts-expect-error Testing invalid input
-      await expect(trackEvent(null)).rejects.toThrow('Event name is required');
+      // @ts-expect-error Testing invalid input type
+      await expect(trackEvent(undefined)).rejects.toThrow('Event name is required');
     });
 
     it('handles tracking errors gracefully', async () => {

@@ -163,10 +163,6 @@ describe('Structured Data Generators', () => {
     expect(ratingValue).toBeGreaterThanOrEqual(0);
     expect(ratingValue).toBeLessThanOrEqual(5);
   });
-    const rating = parseFloat(schema.aggregateRating.ratingValue);
-    expect(rating).toBeGreaterThanOrEqual(0);
-    expect(rating).toBeLessThanOrEqual(5);
-  });
 });
 
 describe('generateOrganizationSchema', () => {

@@ -5,7 +5,9 @@
 
 import type { OrganizationSchema, ProductSchema, WebsiteSchema } from './types';
 
-interface CacheEntry<T> {
+type SchemaType = OrganizationSchema | ProductSchema | WebsiteSchema;
+
+interface CacheEntry<T extends SchemaType = SchemaType> {
   data: T;
   timestamp: number;
   key: string;
@@ -13,11 +15,11 @@ interface CacheEntry<T> {
 
 class SchemaCache {
   private static instance: SchemaCache;
-  private cache: Map<string, CacheEntry<unknown>>;
+  private cache = new Map<string, CacheEntry>();
   private readonly TTL = 5 * 60 * 1000; // 5 minutes cache TTL
 
   private constructor() {
-    this.cache = new Map();
+    // Cache is initialized in the declaration
   }
 
   static getInstance(): SchemaCache {
@@ -37,14 +39,14 @@ class SchemaCache {
   /**
    * Check if a cached entry is still valid
    */
-  private isValid(entry: CacheEntry<unknown>): boolean {
+  private isValid(entry: CacheEntry): boolean {
     return Date.now() - entry.timestamp < this.TTL;
   }
 
   /**
    * Get a cached schema if available and valid
    */
-  get<T>(prefix: string, config?: object): T | undefined {
+  get<T extends SchemaType>(prefix: string, config?: object): T | undefined {
     const key = this.generateKey(prefix, config);
     const entry = this.cache.get(key) as CacheEntry<T> | undefined;
 
@@ -63,7 +65,7 @@ class SchemaCache {
   /**
    * Store a schema in the cache
    */
-  set<T>(prefix: string, data: T, config?: object): void {
+  set<T extends SchemaType>(prefix: string, data: T, config?: object): void {
     const key = this.generateKey(prefix, config);
     this.cache.set(key, {
       data,
