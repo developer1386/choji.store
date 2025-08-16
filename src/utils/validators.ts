@@ -23,19 +23,49 @@ const _isValidUrl = (url: string): boolean => {
     
     // Check protocol
     const isValidProtocol = parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+    if (!isValidProtocol) return false;
     
+    // Handle IP addresses
+    const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+    const ipv6Regex = /^(\[([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}\])$/;
+    const isIpAddress = ipv4Regex.test(parsedUrl.hostname) || ipv6Regex.test(parsedUrl.hostname);
+    
+    if (isIpAddress) {
+      if (ipv4Regex.test(parsedUrl.hostname)) {
+        // Validate IPv4 address ranges
+        const parts = parsedUrl.hostname.split('.').map(Number);
+        return parts.every(part => part >= 0 && part <= 255);
+      }
+      return true; // IPv6 validation is handled by URL constructor
+    }
+
     // Split hostname into parts
     const hostnameParts = parsedUrl.hostname.split('.');
     
     // Verify domain has valid structure (at least two parts, each non-empty)
     const hasValidDomain = hostnameParts.length >= 2 && 
-      hostnameParts.every(part => part.length > 0);
+      hostnameParts.every(part => part.length > 0 && !/^-|-$/.test(part));
 
     // Check TLD is not just a number and has reasonable length
     const tld = hostnameParts[hostnameParts.length - 1];
     const hasValidTld = tld.length >= 2 && !/^\d+$/.test(tld);
 
-    return isValidProtocol && hasValidDomain && hasValidTld;
+    // Check port if present
+    if (parsedUrl.port) {
+      const port = parseInt(parsedUrl.port, 10);
+      if (isNaN(port) || port <= 0 || port > 65535) {
+        return false;
+      }
+    }
+
+    // Additional validations
+    if (url.includes('//')) {
+      // Ensure no double slashes in path
+      const pathAndQuery = parsedUrl.pathname + parsedUrl.search;
+      if (pathAndQuery.includes('//')) return false;
+    }
+
+    return hasValidDomain && hasValidTld;
   } catch {
     return false;
   }
@@ -89,8 +119,29 @@ const _isValidRating = (rating: string): boolean => {
   if (typeof rating !== 'string') {
     throw new TypeError('Rating value must be a string');
   }
+
+  // Check for invalid formats first
+  if (/[^0-9.]/.test(rating)) return false; // Only digits and decimal point allowed
+  if (rating.startsWith('.') || rating.endsWith('.')) return false; // No leading/trailing decimal
+  if ((rating.match(/\./g) || []).length > 1) return false; // Only one decimal point allowed
+  if (/^0\d/.test(rating)) return false; // No leading zeros except for "0" itself
+  if (rating.includes(' ')) return false; // No spaces allowed
+
   const numericRating = parseFloat(rating);
-  return !isNaN(numericRating) && numericRating >= 0 && numericRating <= 5;
+  if (isNaN(numericRating)) return false;
+  if (numericRating < 0 || numericRating > 5) return false;
+
+  // Check decimal places
+  const decimalParts = rating.split('.');
+  if (decimalParts.length > 1) {
+    // If has decimal places, only allow .0, .25, .5, .75
+    const decimalPart = decimalParts[1];
+    if (decimalPart.length > 2) return false;
+    const validDecimals = ['0', '25', '5', '75'];
+    if (!validDecimals.includes(decimalPart)) return false;
+  }
+
+  return true;
 };
 
 export const isValidRating = memoizeValidator<string, boolean>(_isValidRating);
