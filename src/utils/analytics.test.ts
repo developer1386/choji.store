@@ -1,22 +1,26 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { trackPageView, trackEvent } from './analytics';
 
-// Mock Umami analytics
+// Mock Umami tracker
+const mockTrack = vi.fn();
 vi.mock('@umami/client', () => ({
   default: {
-    track: vi.fn(),
+    track: mockTrack,
     init: vi.fn()
   }
 }));
 
+// Mock window.umami
+const mockUmami = { track: mockTrack };
+vi.stubGlobal('umami', mockUmami);
+
 describe('Analytics Tracking', () => {
   beforeEach(() => {
-    // Clear mocks before each test
-    vi.clearAllMocks();
+    mockTrack.mockClear();
   });
 
   afterEach(() => {
-    // Reset modules after each test
+    vi.unstubAllGlobals();
     vi.resetModules();
   });
 
@@ -53,7 +57,7 @@ describe('Analytics Tracking', () => {
 
       await trackEvent(eventName, eventData);
 
-      expect(vi.mocked(window.umami?.track)).toHaveBeenCalledWith(eventName, {
+      expect(mockTrack).toHaveBeenCalledWith(eventName, {
         ...eventData,
         websiteId: expect.any(String)
       });
@@ -64,20 +68,20 @@ describe('Analytics Tracking', () => {
 
       await trackEvent(eventName);
 
-      expect(vi.mocked(window.umami?.track)).toHaveBeenCalledWith(eventName, {
+      expect(mockTrack).toHaveBeenCalledWith(eventName, {
         websiteId: expect.any(String)
       });
     });
 
-    it('validates event names', async () => {
-      await expect(trackEvent('')).rejects.toThrow('Event name is required');
+    it('validates event names', () => {
+      expect(() => trackEvent('')).toThrow('Event name is required');
       // @ts-expect-error Testing invalid input type
-      await expect(trackEvent(undefined)).rejects.toThrow('Event name is required');
+      expect(() => trackEvent(undefined)).toThrow('Event name is required');
     });
 
     it('handles tracking errors gracefully', async () => {
       // Mock tracking error
-      vi.mocked(window.umami?.track).mockRejectedValueOnce(new Error('Tracking failed'));
+      mockTrack.mockRejectedValueOnce(new Error('Tracking failed'));
 
       const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
       

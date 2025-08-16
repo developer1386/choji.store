@@ -20,9 +20,22 @@ const _isValidUrl = (url: string): boolean => {
   }
   try {
     const parsedUrl = new URL(url);
+    
+    // Check protocol
     const isValidProtocol = parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
-    const hasValidDomain = parsedUrl.hostname.length > 0 && parsedUrl.hostname.includes('.');
-    return isValidProtocol && hasValidDomain;
+    
+    // Split hostname into parts
+    const hostnameParts = parsedUrl.hostname.split('.');
+    
+    // Verify domain has valid structure (at least two parts, each non-empty)
+    const hasValidDomain = hostnameParts.length >= 2 && 
+      hostnameParts.every(part => part.length > 0);
+
+    // Check TLD is not just a number and has reasonable length
+    const tld = hostnameParts[hostnameParts.length - 1];
+    const hasValidTld = tld.length >= 2 && !/^\d+$/.test(tld);
+
+    return isValidProtocol && hasValidDomain && hasValidTld;
   } catch {
     return false;
   }

@@ -27,7 +27,7 @@ export class InvalidUrlError extends SchemaValidationError {
  */
 export class InvalidCurrencyError extends SchemaValidationError {
   constructor(currency: string) {
-    super(`Invalid currency code: ${currency}`);
+    super(`Invalid currency code: ${currency}. Valid currencies are: USD, EUR, GBP, JPY, CAD, AUD`);
     this.name = 'InvalidCurrencyError';
   }
 }
@@ -37,7 +37,7 @@ export class InvalidCurrencyError extends SchemaValidationError {
  */
 export class InvalidAvailabilityError extends SchemaValidationError {
   constructor(state: string) {
-    super(`Invalid availability state: ${state}`);
+    super(`Invalid availability state: ${state}. Valid states are: InStock, OutOfStock, PreOrder, Discontinued`);
     this.name = 'InvalidAvailabilityError';
   }
 }
