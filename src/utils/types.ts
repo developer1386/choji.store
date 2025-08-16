@@ -46,12 +46,18 @@ export interface Brand {
 }
 
 /**
- * Offer information for products
+ * Offer information for products following schema.org standards.
+ * Represents pricing, availability, and seller information for a product.
+ * @see {@link https://schema.org/Offer}
  */
 export interface Offer {
+  /** Fixed value 'Offer' for schema.org type */
   '@type': 'Offer';
-  priceCurrency: string;
-  availability: string;
+  /** ISO 4217 currency code from VALID_CURRENCIES */
+  priceCurrency: CurrencyCode;
+  /** Schema.org availability state URL from VALID_AVAILABILITY_STATES */
+  availability: AvailabilityState;
+  /** Organization offering the product */
   seller: {
     '@type': 'Organization';
     name: string;
@@ -86,7 +92,9 @@ export interface WebsiteSchema extends BaseSchema {
 }
 
 /**
- * Valid availability values for product offers
+ * Valid availability values for product offers following schema.org standards.
+ * These URLs are used in the Offer interface's availability field.
+ * @see {@link https://schema.org/ItemAvailability}
  */
 export const VALID_AVAILABILITY_STATES = [
   'https://schema.org/InStock',
@@ -96,16 +104,28 @@ export const VALID_AVAILABILITY_STATES = [
 ] as const;
 
 /**
- * Valid currency codes
+ * Valid ISO 4217 currency codes supported by the application.
+ * Used in product offers and pricing information.
+ * @see {@link https://en.wikipedia.org/wiki/ISO_4217}
  */
 export const VALID_CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'] as const;
 
 /**
- * Type for valid availability states
+ * Union type of valid schema.org availability state URLs.
+ * Created from VALID_AVAILABILITY_STATES array for type safety.
+ * @example
+ * ```typescript
+ * const state: AvailabilityState = 'https://schema.org/InStock';
+ * ```
  */
 export type AvailabilityState = typeof VALID_AVAILABILITY_STATES[number];
 
 /**
- * Type for valid currency codes
+ * Union type of supported ISO 4217 currency codes.
+ * Created from VALID_CURRENCIES array for type safety.
+ * @example
+ * ```typescript
+ * const currency: CurrencyCode = 'USD';
+ * ```
  */
 export type CurrencyCode = typeof VALID_CURRENCIES[number];

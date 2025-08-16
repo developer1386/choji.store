@@ -89,8 +89,11 @@ utils/
 ```typescript
 import { generateOrganizationSchema } from './schemaGenerators';
 
-// Generate organization schema
-const schema = generateOrganizationSchema({
+// Generate a basic organization schema
+const orgSchema = generateOrganizationSchema();
+
+// Generate an organization schema with custom values
+const customSchema = generateOrganizationSchema({
   name: 'Custom Store',
   url: 'https://example.com'
 });

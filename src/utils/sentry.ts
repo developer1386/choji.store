@@ -203,6 +203,26 @@ export const initSentry = () => {
  * 
  * @see {@link https://docs.sentry.io/platforms/javascript/guides/react/components/errorboundary/ Error Boundary Documentation}
  */
+/**
+ * Higher-order component that wraps React components with Sentry error boundary functionality.
+ * This allows for graceful error handling and reporting to Sentry when components throw errors.
+ *
+ * @template P - The props type of the component being wrapped
+ * @param {React.ComponentType<P>} Component - The React component to wrap with error boundary
+ * @param {Sentry.WithErrorBoundaryOptions} [options] - Optional configuration for the error boundary
+ * @returns {React.ComponentType<P>} A wrapped component with Sentry error boundary
+ *
+ * @example
+ * // Basic usage
+ * const SafeComponent = SentryErrorBoundary(MyComponent);
+ *
+ * @example
+ * // With custom fallback and error handling
+ * const SafeComponent = SentryErrorBoundary(MyComponent, {
+ *   fallback: (error) => <ErrorDisplay error={error} />,
+ *   onError: (error) => console.error('Component failed:', error)
+ * });
+ */
 export const SentryErrorBoundary = Sentry.withErrorBoundary;
 
 /**

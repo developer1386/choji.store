@@ -195,7 +195,15 @@ npm run preview
 
 ```bash
 git add .
-git commit -m "feat: add your feature description"
+# Follow the conventional commit format: <type>: <description>
+git commit -m "feat(component): add detailed feature description"
+```
+
+For example:
+```bash
+git commit -m "feat(analytics): implement privacy-focused user tracking"
+git commit -m "fix(ui): resolve mobile navigation overflow issue"
+git commit -m "perf(images): optimize product image loading"
 ```
 
 ## 📝 Commit Message Format
@@ -269,7 +277,7 @@ feat: add advanced analytics dashboard
 **Description Template:**
 ```markdown
 ## 📋 Description
-Brief description of changes made.
+ Brief description of changes made.
 
 ## 🔗 Related Issues
 Closes #123

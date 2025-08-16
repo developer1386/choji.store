@@ -117,7 +117,15 @@ interface OrganizationConfig {
  * });
  * ```
  */
+import { schemaCache } from './schemaCache';
+
 export function generateOrganizationSchema(config?: OrganizationConfig): OrganizationSchema {
+  // Check cache first
+  const cached = schemaCache.get<OrganizationSchema>('organization', config);
+  if (cached) {
+    return cached;
+  }
+
   const schema: OrganizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -138,24 +146,30 @@ export function generateOrganizationSchema(config?: OrganizationConfig): Organiz
     ],
   };
 
-  // Schema URLs will never be undefined due to default values
-  const url = schema.url!;
-  const logo = schema.logo!;
-
-  // Validate URLs
-  if (!isValidUrl(url)) {
-    throw new InvalidUrlError(url);
-  }
-  if (!isValidUrl(logo)) {
-    throw new InvalidUrlError(logo);
+  // Validate required URLs
+  if (!schema.url || !isValidUrl(schema.url)) {
+    throw new InvalidUrlError(
+      `Organization URL "${schema.url}" is invalid. Must be a valid HTTP(S) URL.`
+    );
   }
 
-  // Validate social media URLs
-  schema.sameAs?.forEach(socialUrl => {
+  if (!schema.logo || !isValidUrl(schema.logo)) {
+    throw new InvalidUrlError(
+      `Organization logo URL "${schema.logo}" is invalid. Must be a valid HTTP(S) URL pointing to an image.`
+    );
+  }
+
+  // Validate social media URLs with descriptive errors
+  schema.sameAs?.forEach((socialUrl, index) => {
     if (!isValidUrl(socialUrl)) {
-      throw new InvalidUrlError(socialUrl);
+      throw new InvalidUrlError(
+        `Social media URL "${socialUrl}" at index ${index} is invalid. Must be a valid HTTP(S) URL.`
+      );
     }
   });
+
+  // Cache the validated schema
+  schemaCache.set('organization', schema, config);
 
   return schema;
 }
