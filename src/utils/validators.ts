@@ -60,7 +60,7 @@ const _isValidUrl = (url: string): boolean => {
 
     // Additional validations
     if (url.includes('//')) {
-      // Ensure no double slashes in path
+      // Ensure no double slashes in path (except after protocol)
       const pathAndQuery = parsedUrl.pathname + parsedUrl.search;
       if (pathAndQuery.includes('//')) return false;
     }
@@ -72,6 +72,50 @@ const _isValidUrl = (url: string): boolean => {
 };
 
 export const isValidUrl = memoizeValidator<string, boolean>(_isValidUrl);
+
+/**
+ * Validate a schema.org URL
+ * @param {string} url - The schema.org URL to validate
+ * @returns {boolean} true if valid schema.org URL, false otherwise
+ * @throws {TypeError} if url is not a string
+ * @example
+ * isValidSchemaUrl('https://schema.org/InStock') // returns true
+ * isValidSchemaUrl('http://schema.org/InStock') // returns true
+ * isValidSchemaUrl('https://example.com/schema.org') // returns false
+ */
+const _isValidSchemaUrl = (url: string): boolean => {
+  if (typeof url !== 'string') {
+    throw new TypeError('URL must be a string');
+  }
+  try {
+    const parsedUrl = new URL(url);
+
+    // Check protocol
+    const isValidProtocol = parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+    if (!isValidProtocol) return false;
+
+    // Strict hostname check for schema.org
+    const allowedHosts = ['schema.org', 'www.schema.org', 'docs.schema.org'];
+    if (!allowedHosts.includes(parsedUrl.hostname)) return false;
+
+    // No query parameters allowed
+    if (parsedUrl.search) return false;
+
+    // No port numbers allowed
+    if (parsedUrl.port) return false;
+
+    // Path must exist and not contain double slashes
+    if (!parsedUrl.pathname || parsedUrl.pathname === '/' || parsedUrl.pathname.includes('//')) {
+      return false;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const isValidSchemaUrl = memoizeValidator<string, boolean>(_isValidSchemaUrl);
 
 /**
  * Validate a currency code against ISO 4217 standards
@@ -104,6 +148,10 @@ const _isValidAvailability = (state: string): state is AvailabilityState => {
   if (typeof state !== 'string') {
     throw new TypeError('Availability state must be a string');
   }
+  // First validate that it's a valid schema.org URL
+  if (!_isValidSchemaUrl(state)) return false;
+  
+  // Then check if it's a valid availability state
   return VALID_AVAILABILITY_STATES.includes(state as AvailabilityState);
 };
 
