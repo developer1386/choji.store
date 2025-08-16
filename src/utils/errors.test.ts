@@ -113,23 +113,36 @@ describe('Custom Error Classes', () => {
     });
   });
 
-  describe('Error Recovery', () => {
-    it('can be safely serialized', () => {
-      const error = new InvalidRatingError('6.0');
+  describe('Error Serialization', () => {
+    it('preserves error properties when serialized', () => {
+      const testValue = '6.0';
+      const error = new InvalidRatingError(testValue);
       const serialized = JSON.stringify(error);
       const parsed = JSON.parse(serialized);
 
-      expect(parsed.name).toBe('InvalidRatingError');
-      expect(parsed.message).toContain('6.0');
+      expect(parsed).toEqual(expect.objectContaining({
+        name: 'InvalidRatingError',
+        message: expect.stringContaining(testValue)
+      }));
     });
 
-    it('preserves error prototype after serialization', () => {
-      const error = new InvalidUrlError('test');
-      const serialized = JSON.stringify(error);
-      const parsed = JSON.parse(serialized);
+    it('maintains error structure across serialization', () => {
+      const testCases = [
+        { ErrorClass: InvalidUrlError, value: 'http://invalid' },
+        { ErrorClass: InvalidCurrencyError, value: 'INVALID' },
+        { ErrorClass: InvalidRatingError, value: '10.0' }
+      ];
 
-      expect(parsed.name).toBe('InvalidUrlError');
-      expect(parsed.message).toContain('test');
+      testCases.forEach(({ ErrorClass, value }) => {
+        const error = new ErrorClass(value);
+        const serialized = JSON.stringify(error);
+        const parsed = JSON.parse(serialized);
+
+        expect(parsed).toEqual(expect.objectContaining({
+          name: error.name,
+          message: expect.stringContaining(value)
+        }));
+      });
     });
   });
 });

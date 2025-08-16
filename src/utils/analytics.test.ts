@@ -1,25 +1,34 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { trackPageView, trackEvent } from './analytics';
 
-// Mock Umami tracker
-const mockTrack = vi.fn();
+// Set up DOM environment mock
+const mockWindow = {
+  umami: {
+    track: vi.fn().mockResolvedValue(undefined)
+  }
+};
+
+// Mock Umami analytics
 vi.mock('@umami/client', () => ({
   default: {
-    track: mockTrack,
+    track: mockWindow.umami.track,
     init: vi.fn()
   }
 }));
 
-// Mock window.umami
-const mockUmami = { track: mockTrack };
-vi.stubGlobal('umami', mockUmami);
+// Create global objects
+vi.stubGlobal('window', mockWindow);
+vi.stubGlobal('umami', mockWindow.umami);
 
 describe('Analytics Tracking', () => {
   beforeEach(() => {
-    mockTrack.mockClear();
+    // Reset all mocks before each test
+    vi.clearAllMocks();
+    mockWindow.umami.track.mockClear();
   });
 
   afterEach(() => {
+    // Clean up globals
     vi.unstubAllGlobals();
     vi.resetModules();
   });
@@ -57,7 +66,7 @@ describe('Analytics Tracking', () => {
 
       await trackEvent(eventName, eventData);
 
-      expect(mockTrack).toHaveBeenCalledWith(eventName, {
+      expect(mockWindow.umami.track).toHaveBeenCalledWith(eventName, {
         ...eventData,
         websiteId: expect.any(String)
       });
@@ -68,32 +77,34 @@ describe('Analytics Tracking', () => {
 
       await trackEvent(eventName);
 
-      expect(mockTrack).toHaveBeenCalledWith(eventName, {
+      expect(mockWindow.umami.track).toHaveBeenCalledWith(eventName, {
         websiteId: expect.any(String)
       });
     });
 
     it('validates event names', () => {
       expect(() => trackEvent('')).toThrow('Event name is required');
-      // @ts-expect-error Testing invalid input type
-      expect(() => trackEvent(undefined)).toThrow('Event name is required');
+      expect(() => {
+        // @ts-expect-error Testing invalid input type
+        trackEvent(undefined);
+      }).toThrow('Event name is required');
     });
 
     it('handles tracking errors gracefully', async () => {
       // Mock tracking error
-      mockTrack.mockRejectedValueOnce(new Error('Tracking failed'));
+      mockWindow.umami.track.mockRejectedValueOnce(new Error('Tracking failed'));
 
-      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       
       // Should not throw but log error
       await trackEvent('test_event');
       
-      expect(consoleError).toHaveBeenCalledWith(
+      expect(consoleSpy).toHaveBeenCalledWith(
         'Analytics Error:',
         expect.any(Error)
       );
 
-      consoleError.mockRestore();
+      consoleSpy.mockRestore();
     });
   });
 });
