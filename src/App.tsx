@@ -3,10 +3,10 @@
  *
  * A single-page e-commerce application for premium natural homemade cat food.
  * This component serves as the central hub for the entire application, managing
- * state, user interactions, and rendering the complete UI structure.
+ * state, user interactions, and rendering the comp                loading="eager"te UI structure.
  *
  * Key Features:
- * - SEO-optimized content structure with semantic HTML5 elements
+ * - SEO-optimized content structure with semantic HTML5 el                  loading="eager"ents
  * - Product showcase with dynamic benefits and quantity selection
  * - WhatsApp integration for streamlined order processing
  * - Fully responsive design with mobile-first approach
@@ -281,7 +281,7 @@ function App() {
                 width="750"
                 height="800"
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
               />
               <span className="text-2xl font-bold text-gray-800">
                 choji.store
@@ -411,7 +411,7 @@ function App() {
                   alt="Choji - The inspiration behind our premium homemade cat food"
                   className="absolute inset-0 w-full h-full object-cover rounded-xl"
                   loading="eager"
-                  fetchPriority="high"
+                  fetchpriority="high"
                 />
               </div>
             </div>
