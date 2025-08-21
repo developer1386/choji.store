@@ -152,4 +152,8 @@ describe('Schema Generators', () => {
       ).toThrow(InvalidUrlError);
     });
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> main

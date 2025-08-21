@@ -1,4 +1,7 @@
 /**
+<<<<<<< HEAD
+ * Schema generator functions with type safety and validation
+=======
  * @fileoverview Schema generator functions for creating validated JSON-LD structured data
  * 
  * This module provides a set of strongly-typed functions for generating schema.org
@@ -28,6 +31,7 @@
  *   ratingValue: '4.5'
  * });
  * ```
+>>>>>>> main
  */
 
 import {
@@ -52,6 +56,13 @@ import {
   InvalidAvailabilityError,
   InvalidRatingError,
   InvalidReviewCountError,
+<<<<<<< HEAD
+  MissingRequiredFieldError,
+} from './errors';
+
+/**
+ * Organization schema configuration
+=======
 } from './errors';
 
 /**
@@ -77,6 +88,7 @@ import {
  *   phone: "+1-555-123-4567"
  * };
  * ```
+>>>>>>> main
  */
 interface OrganizationConfig {
   name?: string;
@@ -88,6 +100,26 @@ interface OrganizationConfig {
 }
 
 /**
+<<<<<<< HEAD
+ * Generate Organization Schema with validation
+ * @param config Optional configuration to override defaults
+ * @returns Validated organization schema
+ * @throws {InvalidUrlError} If URL or logo URL is invalid
+ * @throws {MissingRequiredFieldError} If required fields are missing
+ */
+export function generateOrganizationSchema(config?: OrganizationConfig): OrganizationSchema {
+  const url = config?.url ?? 'https://choji.store';
+  const logo = config?.logo ?? 'https://choji.store/logo/logo.svg';
+
+  // Validate URLs
+  if (!isValidUrl(url)) {
+    throw new InvalidUrlError(url);
+  }
+  if (!isValidUrl(logo)) {
+    throw new InvalidUrlError(logo);
+  }
+
+=======
  * Generates a validated Organization schema with the specified configuration
  * 
  * Creates a schema.org Organization representation with proper JSON-LD structure.
@@ -118,12 +150,18 @@ interface OrganizationConfig {
  * ```
  */
 export function generateOrganizationSchema(config?: OrganizationConfig): OrganizationSchema {
+>>>>>>> main
   const schema: OrganizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: config?.name ?? 'Choji Store',
+<<<<<<< HEAD
+    url,
+    logo,
+=======
     url: config?.url ?? 'https://choji.store',
     logo: config?.logo ?? 'https://choji.store/logo/logo.svg',
+>>>>>>> main
     description: config?.description ?? 'Premium homemade cat food made with fresh, natural ingredients',
     contactPoint: {
       '@type': 'ContactPoint',
@@ -138,6 +176,8 @@ export function generateOrganizationSchema(config?: OrganizationConfig): Organiz
     ],
   };
 
+<<<<<<< HEAD
+=======
   // Schema URLs will never be undefined due to default values
   const url = schema.url!;
   const logo = schema.logo!;
@@ -150,6 +190,7 @@ export function generateOrganizationSchema(config?: OrganizationConfig): Organiz
     throw new InvalidUrlError(logo);
   }
 
+>>>>>>> main
   // Validate social media URLs
   schema.sameAs?.forEach(socialUrl => {
     if (!isValidUrl(socialUrl)) {
@@ -161,6 +202,9 @@ export function generateOrganizationSchema(config?: OrganizationConfig): Organiz
 }
 
 /**
+<<<<<<< HEAD
+ * Product schema configuration
+=======
  * Configuration options for generating a Product schema
  * 
  * All fields are optional and have defaults suitable for Choji Store products.
@@ -186,6 +230,7 @@ export function generateOrganizationSchema(config?: OrganizationConfig): Organiz
  *   reviewCount: "100"
  * };
  * ```
+>>>>>>> main
  */
 interface ProductConfig {
   name?: string;
@@ -199,6 +244,16 @@ interface ProductConfig {
 }
 
 /**
+<<<<<<< HEAD
+ * Generate Product Schema with validation
+ * @param config Optional configuration to override defaults
+ * @returns Validated product schema
+ * @throws {InvalidCurrencyError} If currency code is invalid
+ * @throws {InvalidAvailabilityError} If availability state is invalid
+ * @throws {InvalidRatingError} If rating value is invalid
+ * @throws {InvalidReviewCountError} If review count is invalid
+ * @throws {MissingRequiredFieldError} If required fields are missing
+=======
  * Generates a validated Product schema with the specified configuration
  * 
  * Creates a schema.org Product representation with proper JSON-LD structure.
@@ -240,6 +295,7 @@ interface ProductConfig {
  *   ratingValue: "4.8"
  * });
  * ```
+>>>>>>> main
  */
 export function generateProductSchema(config?: ProductConfig): ProductSchema {
   const currency = (config?.priceCurrency ?? 'USD') as CurrencyCode;
@@ -292,6 +348,9 @@ export function generateProductSchema(config?: ProductConfig): ProductSchema {
 }
 
 /**
+<<<<<<< HEAD
+ * Website schema configuration
+=======
  * Configuration options for generating a Website schema
  * 
  * All fields are optional and have defaults suitable for the Choji Store website.
@@ -310,6 +369,7 @@ export function generateProductSchema(config?: ProductConfig): ProductSchema {
  *   description: "Premium products for your pets"
  * };
  * ```
+>>>>>>> main
  */
 interface WebsiteConfig {
   name?: string;
@@ -318,6 +378,20 @@ interface WebsiteConfig {
 }
 
 /**
+<<<<<<< HEAD
+ * Generate Website Schema with validation
+ * @param config Optional configuration to override defaults
+ * @returns Validated website schema
+ * @throws {InvalidUrlError} If URL is invalid
+ * @throws {MissingRequiredFieldError} If required fields are missing
+ */
+export function generateWebsiteSchema(config?: WebsiteConfig): WebsiteSchema {
+  const url = config?.url ?? 'https://choji.store';
+  if (!isValidUrl(url)) {
+    throw new InvalidUrlError(url);
+  }
+
+=======
  * Generates a validated Website schema with the specified configuration
  * 
  * Creates a schema.org WebSite representation with proper JSON-LD structure.
@@ -352,10 +426,19 @@ interface WebsiteConfig {
  * ```
  */
 export function generateWebsiteSchema(config?: WebsiteConfig): WebsiteSchema {
+>>>>>>> main
   const schema: WebsiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: config?.name ?? 'Choji Store',
+<<<<<<< HEAD
+    url,
+    description: config?.description ?? 'Premium homemade cat food with natural ingredients',
+  };
+
+  return schema;
+}
+=======
     url: config?.url ?? 'https://choji.store',
     description: config?.description ?? 'Premium homemade cat food with natural ingredients',
   };
@@ -369,3 +452,4 @@ export function generateWebsiteSchema(config?: WebsiteConfig): WebsiteSchema {
 
   return schema;
 }
+>>>>>>> main
