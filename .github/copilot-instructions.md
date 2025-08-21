@@ -9,6 +9,9 @@ This guide helps AI agents understand key patterns and workflows in the Choji St
 - **SEO-optimized** with structured data and meta tags
 - **Privacy-focused** analytics using Umami
 - **Error tracking** via Sentry
+- **Progressive Web App** with service worker
+- **WhatsApp Integration** for order processing
+- **Accessibility-first** development with ARIA support
 
 ## 🔑 Key Components & Patterns
 
@@ -28,7 +31,9 @@ generateProductSchema({
 ### Error Handling
 - Custom error classes in `src/utils/errors.ts`
 - Always use specific error types (e.g., `InvalidUrlError`, `InvalidCurrencyError`)
-- Sentry integration for production error tracking
+- Sentry integration for production error tracking via `src/utils/sentry.ts`
+- Implement error boundaries for React components
+- Track errors with proper context using `captureException`
 
 ### Testing Patterns
 - Use Vitest for unit testing
@@ -61,6 +66,9 @@ npm run build  # Production build
 - Define interfaces in `src/utils/types.ts`
 - Use type inference where possible
 - Avoid `any` type
+- Utilize built-in utility types
+- Each schema type must extend base interfaces
+- Follow naming convention: `ISchemeName` for interfaces
 
 ### SEO Requirements
 - All pages require proper meta tags
@@ -83,4 +91,7 @@ npm run build  # Production build
 - `src/utils/schemaGenerators.ts` - SEO schema generation
 - `src/utils/validators.ts` - Data validation
 - `src/utils/analytics.ts` - Privacy-focused tracking
+- `src/utils/cookieConsent.ts` - GDPR-compliant cookie handling
 - `public/sw.js` - Service worker for PWA
+- `src/utils/structuredData.ts` - Core SEO data structure
+- `tsconfig.json` - TypeScript configuration
