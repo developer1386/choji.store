@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { generateProductSchema } from './structuredData';
+import { generateProductSchema, generateOrganizationSchema } from './structuredData';
 
 describe('generateProductSchema', () => {
+  // Test basic schema structure
   it('returns product schema with required fields', () => {
     const schema = generateProductSchema();
     expect(schema).toMatchObject({
@@ -27,5 +28,51 @@ describe('generateProductSchema', () => {
         reviewCount: expect.any(String),
       },
     });
+  });
+
+  // Test schema context
+  it('includes correct schema.org context', () => {
+    const schema = generateProductSchema();
+    expect(schema['@context']).toBe('https://schema.org');
+  });
+
+  // Test data validation
+  it('has valid offer price currency', () => {
+    const schema = generateProductSchema();
+    expect(schema.offers.priceCurrency).toMatch(/^[A-Z]{3}$/);
+  });
+
+  // Test rating constraints
+  it('has valid rating value range', () => {
+    const schema = generateProductSchema();
+    const rating = parseFloat(schema.aggregateRating.ratingValue);
+    expect(rating).toBeGreaterThanOrEqual(0);
+    expect(rating).toBeLessThanOrEqual(5);
+  });
+});
+
+describe('generateOrganizationSchema', () => {
+  it('returns organization schema with required fields', () => {
+    const schema = generateOrganizationSchema();
+    expect(schema).toMatchObject({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: expect.any(String),
+      url: expect.any(String),
+      logo: expect.any(String),
+      description: expect.any(String),
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: expect.any(String),
+        contactType: expect.any(String),
+        availableLanguage: expect.any(String),
+      },
+    });
+  });
+
+  it('has valid URL format', () => {
+    const schema = generateOrganizationSchema();
+    expect(schema.url).toMatch(/^https?:\/\/.+/);
+    expect(schema.logo).toMatch(/^https?:\/\/.+/);
   });
 });

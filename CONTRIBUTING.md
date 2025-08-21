@@ -2,7 +2,35 @@
 
 > **Premium Homemade Cat Food E-commerce Platform**
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+
+Thank you for considering contributing to Choji Store! This document provides guidelines and workflows for contributing to our project.
+
+## 📑 Table of Contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Development Workflow](#development-workflow)
+- [Commit Guidelines](#commit-guidelines)
+- [Pull Request Process](#pull-request-process)
+- [Coding Standards](#coding-standards)
+- [Documentation](#documentation)
+- [Getting Help](#getting-help)
+
 Thank you for considering contributing to Choji Store! This document provides comprehensive guidelines, best practices, and detailed workflows for contributing to our premium cat food e-commerce platform built with React, TypeScript, and modern web technologies.
+
+## 📜 Code of Conduct
+
+We follow the [Contributor Covenant](https://www.contributor-covenant.org/) Code of Conduct. By participating in this project, you agree to uphold its terms.
+
+Key points:
+- Be respectful and inclusive
+- No harassment or discrimination
+- Focus on constructive feedback
+- Support a positive environment
 
 ## 🌟 Project Overview
 
@@ -16,6 +44,20 @@ Choji Store is a modern, SEO-optimized e-commerce landing page featuring:
 - **Performance monitoring** with Sentry and Web Vitals
 
 ## 🚀 Getting Started
+
+### System Requirements
+
+- **Node.js**: v18 or higher
+- **npm**: v9 or higher
+- **Git**: Latest version
+- **VS Code**: Recommended editor
+
+### Development Tools
+
+- **TypeScript**: For type safety
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **Vitest**: Testing framework
 
 ### Prerequisites
 
@@ -37,8 +79,24 @@ Before contributing, ensure you have:
 
 ### 2. Environment Setup
 
-3. **Install dependencies:**
+1. **Install VS Code Extensions**:
+   - ESLint
+   - Prettier
+   - TypeScript + JavaScript
+   - Tailwind CSS IntelliSense
+
+2. **Configure Git**:
    ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "your.email@example.com"
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   # Clean install dependencies
+   npm ci
+   
+   # Or regular install
    npm install
    ```
 
@@ -66,6 +124,33 @@ Before contributing, ensure you have:
    ```
 
 ## 🛠️ Development Workflow
+
+### Development Cycle
+
+1. 📋 **Plan**
+   - Review issues/tasks
+   - Understand requirements
+   - Design solution
+
+2. 🔧 **Develop**
+   - Write clean code
+   - Follow standards
+   - Add tests
+
+3. 🧪 **Test**
+   - Run test suite
+   - Manual testing
+   - Performance check
+
+4. 📝 **Document**
+   - Update docs
+   - Add comments
+   - Write examples
+
+5. 🔍 **Review**
+   - Self-review
+   - Peer review
+   - Address feedback
 
 ### 1. Making Changes
 
@@ -115,7 +200,7 @@ git commit -m "feat: add your feature description"
 
 ## 📝 Commit Message Format
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for clear, semantic commit messages:
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specifications for clear, semantic commit messages:
 
 ### Commit Types
 
@@ -215,6 +300,23 @@ Related to #456
 - **Performance impact assessment**
 
 ## 🎨 Code Style Guidelines
+
+### General Principles
+
+1. **Readability First**
+   - Clear variable names
+   - Consistent formatting
+   - Meaningful comments
+
+2. **Maintainability**
+   - Small functions
+   - Single responsibility
+   - DRY principle
+
+3. **Performance**
+   - Efficient algorithms
+   - Resource optimization
+   - Bundle size awareness
 
 ### TypeScript Standards
 

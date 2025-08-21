@@ -1,5 +1,23 @@
 {
-  // TypeScript Project References Configuration
+  /**
+   * TypeScript Configuration for Choji Store
+   * 
+   * This is the root TypeScript configuration that uses project references
+   * for efficient build organization. It delegates specific configurations
+   * to specialized files for different parts of the application.
+   * 
+   * Project Structure:
+   * - tsconfig.app.json: Application source
+   * - tsconfig.node.json: Build tools
+   * 
+   * Benefits:
+   * - Faster builds
+   * - Better IDE support
+   * - Clean separation
+   * - Build optimization
+   * 
+   * @see {@link https://www.typescriptlang.org/docs/handbook/project-references.html}
+   */
   // 
   // This is the root TypeScript configuration file that uses project references
   // to organize the build process efficiently. It delegates compilation to

@@ -94,6 +94,41 @@
  */
 
 /* Reset and base styles */
+/**
+ * @fileoverview Global Styles and Tailwind Configuration
+ * 
+ * This file contains global styles and Tailwind CSS configuration for the
+ * Choji Store application. It defines:
+ * 
+ * 1. Design System:
+ *    - Color palette
+ *    - Typography scale
+ *    - Spacing system
+ *    - Breakpoints
+ * 
+ * 2. CSS Variables:
+ *    - Primary colors
+ *    - Secondary colors
+ *    - Text colors
+ *    - Background colors
+ * 
+ * 3. Base Styles:
+ *    - Reset defaults
+ *    - Global typography
+ *    - Basic layout
+ * 
+ * 4. Utility Classes:
+ *    - Layout helpers
+ *    - Spacing utilities
+ *    - Typography classes
+ * 
+ * 5. Component Base Styles:
+ *    - Buttons
+ *    - Forms
+ *    - Cards
+ *    - Navigation
+ */
+
 @tailwind base;
 
 /* Component classes */

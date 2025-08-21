@@ -1,5 +1,27 @@
 # 🔧 Service Worker Documentation
 
+> Comprehensive guide for the Choji Store Progressive Web App (PWA) service worker implementation.
+
+## 📑 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Implementation](#implementation)
+- [Cache Strategy](#cache-strategy)
+- [Development Guidelines](#development-guidelines)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+
+## 🎯 Overview
+
+The service worker implementation enables offline capabilities and improved performance for the Choji Store PWA. It handles:
+
+- ⚡ Resource caching
+- 📱 Offline functionality
+- 🔄 Background sync
+- 📲 Push notifications
+- 🚀 Performance optimization
+
 > **Progressive Web App (PWA) Implementation for Choji Store**
 
 The service worker implementation in this project provides comprehensive offline capabilities, intelligent caching strategies, and Progressive Web App (PWA) features for the Choji Store website, ensuring optimal performance and user experience across all network conditions.
@@ -221,9 +243,53 @@ self.addEventListener('activate', (event) => {
 
 ## 🛠️ Development Guidelines
 
+## 🔥 Features
+
+### Core Capabilities
+
+1. **Offline Support**
+   - Cache critical resources
+   - Fallback content
+   - Offline page handling
+
+2. **Performance Enhancement**
+   - Resource preloading
+   - Smart caching
+   - Network optimization
+
+3. **User Experience**
+   - App-like behavior
+   - Smooth transitions
+   - Background updates
+
+4. **Push Notifications**
+   - Order status updates
+   - Promotional offers
+   - Stock notifications
+
+## 🛠️ Implementation
+
+### Service Worker Registration
+
+```typescript
+// Register service worker in main.tsx
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then(registration => {
+        console.log('SW registered:', registration.scope);
+      })
+      .catch(error => {
+        console.error('SW registration failed:', error);
+      });
+  });
+}
+```
+
 ### Cache Version Management
 
-```javascript
+```typescript
 // Update version when deploying changes to cached resources
 const CACHE_NAME = 'choji-store-v2'; // Increment version number
 
@@ -235,9 +301,92 @@ const urlsToCache = [
 ];
 ```
 
-### Testing and Debugging
+## 🔄 Cache Strategy
 
-#### Chrome DevTools Testing
+### Cache Types
+
+1. **Static Cache**
+   - HTML, CSS, JS files
+   - Images and icons
+   - Font files
+   - Configuration files
+
+2. **Dynamic Cache**
+   - API responses
+   - Product data
+   - User-specific content
+
+3. **Fallback Cache**
+   - Offline page
+   - Error pages
+   - Placeholder images
+
+### Caching Strategy
+
+```typescript
+// Cache-first strategy for static assets
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+      .catch(() => caches.match('/offline.html'))
+  );
+});
+```
+
+## 🛠️ Development Guidelines
+
+### Best Practices
+
+1. **Version Control**
+   - Increment cache version with changes
+   - Clear old caches on activation
+   - Handle cache transitions
+
+2. **Resource Management**
+   - Prioritize critical resources
+   - Optimize cache size
+   - Regular cache cleanup
+
+3. **Error Handling**
+   - Graceful fallbacks
+   - Network error recovery
+   - Clear error messages
+
+### Code Organization
+
+```typescript
+// Modular service worker structure
+import { cacheStrategies } from './cache-strategies';
+import { notifications } from './notifications';
+import { offlineSupport } from './offline';
+
+// Initialize features
+self.addEventListener('install', (event) => {
+  event.waitUntil(Promise.all([
+    cacheStrategies.initialize(),
+    notifications.setup(),
+    offlineSupport.configure()
+  ]));
+});
+```
+
+## 🧪 Testing
+
+### Testing Methods
+
+1. **Manual Testing**
+   - Offline functionality
+   - Cache updates
+   - Push notifications
+   - Background sync
+
+2. **Automated Testing**
+   - Unit tests for utility functions
+   - Integration tests
+   - E2E testing scenarios
+
+### Chrome DevTools Testing
 
 1. **Application Tab**:
    - Monitor cache storage
@@ -260,14 +409,103 @@ const urlsToCache = [
    });
    ```
 
-#### Testing Checklist
+### Testing Checklist
 
-- [ ] **Offline Functionality**: Test with network disabled
-- [ ] **Cache Updates**: Verify new versions deploy correctly
-- [ ] **Performance Impact**: Monitor Core Web Vitals
-- [ ] **Error Handling**: Test service worker registration failures
-- [ ] **Cross-browser**: Test in different browsers
-- [ ] **Mobile Devices**: Test PWA installation
+✅ **Offline Functionality**
+- [ ] Test with network disabled
+- [ ] Verify offline page display
+- [ ] Check cached resource access
+- [ ] Test offline forms (queue updates)
+
+✅ **Cache Updates**
+- [ ] Verify new version deployment
+- [ ] Check cache cleanup
+- [ ] Test update notifications
+- [ ] Verify resource updates
+
+✅ **Performance Impact**
+- [ ] Monitor Core Web Vitals
+- [ ] Check loading times
+- [ ] Measure cache hit rates
+- [ ] Analyze bandwidth usage
+
+✅ **Error Handling**
+- [ ] Test registration failures
+- [ ] Check network error recovery
+- [ ] Verify fallback content
+- [ ] Monitor error logging
+
+✅ **Cross-browser Testing**
+- [ ] Chrome/Edge (Chromium)
+- [ ] Firefox
+- [ ] Safari
+- [ ] Mobile browsers
+
+✅ **Mobile Testing**
+- [ ] PWA installation
+- [ ] Home screen icon
+- [ ] Splash screen
+- [ ] Offline mode
+- [ ] Push notifications
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **Registration Failures**
+   ```typescript
+   // Check if service worker scope is correct
+   navigator.serviceWorker.register('/sw.js', {
+     scope: '/'
+   });
+   ```
+
+2. **Cache Updates**
+   ```typescript
+   // Force cache update
+   self.skipWaiting();
+   clients.claim();
+   ```
+
+3. **Permission Issues**
+   ```typescript
+   // Request notification permissions early
+   Notification.requestPermission().then(permission => {
+     if (permission === 'granted') {
+       // Setup notifications
+     }
+   });
+   ```
+
+### Debug Tools
+
+1. **Chrome DevTools**
+   - Application tab
+   - Network conditions
+   - Cache storage viewer
+
+2. **Firefox DevTools**
+   - Service Workers tab
+   - Network monitor
+   - Storage inspector
+
+3. **Lighthouse**
+   - PWA audit
+   - Performance metrics
+   - Best practices check
+
+## 📚 Resources
+
+- [MDN Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
+- [Google PWA Guide](https://web.dev/progressive-web-apps/)
+- [Workbox Documentation](https://developers.google.com/web/tools/workbox)
+- [Chrome DevTools Guide](https://developer.chrome.com/docs/devtools/)
+
+## 🔄 Updates
+
+- Last updated: August 2025
+- Current version: 2.0.0
+- Author: Choji Store Team
 
 ### Best Practices
 

@@ -1,3 +1,29 @@
+/**
+ * TypeScript Configuration for Node.js Build Tools
+ * 
+ * This configuration file specifies TypeScript settings for build tools,
+ * scripts, and other Node.js-based utilities. It is separate from the
+ * main application configuration to optimize the build process.
+ * 
+ * Key Features:
+ * 1. Module System:
+ *    - ESM support
+ *    - Bundler compatibility
+ *    - Import/export handling
+ * 
+ * 2. Build Tools Support:
+ *    - Vite configuration
+ *    - Build scripts
+ *    - Utility scripts
+ * 
+ * 3. Type Checking:
+ *    - Strict mode
+ *    - Unused code checks
+ *    - Switch case validation
+ * 
+ * @see {@link https://www.typescriptlang.org/tsconfig}
+ */
+
 {
   "compilerOptions": {
     "target": "ES2022",
