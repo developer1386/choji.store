@@ -135,29 +135,47 @@ export const generateOrganizationSchema = () => ({
  * @see {@link https://schema.org/Product Product Schema Documentation}
  * @see {@link https://developers.google.com/search/docs/data-types/product Google Product Markup}
  */
-export const generateProductSchema = () => ({
+interface ProductSchemaInput {
+  name?: string;
+  description?: string;
+  brand?: string;
+  price?: string;
+  currency?: string;
+  availability?: string;
+  seller?: string;
+  rating?: string;
+  reviews?: string;
+  image?: string;
+  sku?: string;
+  category?: string;
+}
+
+export const generateProductSchema = (input?: ProductSchemaInput) => ({
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "Premium Homemade Cat Food",
-  "description": "Fresh, natural cat food made with chicken, potatoes, and carrots. No additives or preservatives.",
+  "name": input?.name || "Premium Homemade Cat Food",
+  "description": input?.description || "Fresh, natural cat food made with chicken, potatoes, and carrots. No additives or preservatives.",
+  ...(input?.image && { "image": input.image }),
+  ...(input?.sku && { "sku": input.sku }),
   "brand": {
     "@type": "Brand",
-    "name": "Choji Store"
+    "name": input?.brand || "Choji Store"
   },
-  "category": "Pet Food",
+  "category": input?.category || "Pet Food",
   "offers": {
     "@type": "Offer",
-    "availability": "https://schema.org/InStock",
-    "priceCurrency": "USD",
+    "availability": input?.availability || "InStock",
+    "priceCurrency": input?.currency || "USD",
+    ...(input?.price && { "price": input.price }),
     "seller": {
       "@type": "Organization",
-      "name": "Choji Store"
+      "name": input?.seller || "Choji Store"
     }
   },
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": "50"
+    "ratingValue": input?.rating || "5",
+    "reviewCount": input?.reviews || "50"
   }
 });
 

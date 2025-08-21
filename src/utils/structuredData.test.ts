@@ -6,6 +6,7 @@ describe('generateProductSchema', () => {
   it('returns product schema with required fields', () => {
     const schema = generateProductSchema();
     expect(schema).toMatchObject({
+      '@context': 'https://schema.org',
       '@type': 'Product',
       name: expect.any(String),
       description: expect.any(String),
@@ -50,6 +51,51 @@ describe('generateProductSchema', () => {
     expect(rating).toBeLessThanOrEqual(5);
   });
 });
+
+  // Test custom values
+  it('accepts custom values for all fields', () => {
+    const schema = generateProductSchema({
+      name: 'Test Product',
+      description: 'Test Description',
+      brand: 'Test Brand',
+      price: '99.99',
+      currency: 'USD',
+      availability: 'InStock',
+      seller: 'Test Seller',
+      rating: '4.5',
+      reviews: '100',
+      image: 'https://example.com/test.jpg',
+      sku: 'TEST123',
+    });
+
+    expect(schema).toMatchObject({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: 'Test Product',
+      description: 'Test Description',
+      image: 'https://example.com/test.jpg',
+      sku: 'TEST123',
+      brand: {
+        '@type': 'Brand',
+        name: 'Test Brand',
+      },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'USD',
+        price: '99.99',
+        availability: 'InStock',
+        seller: {
+          '@type': 'Organization',
+          name: 'Test Seller',
+        },
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5',
+        reviewCount: '100',
+      },
+    });
+  });
 
 describe('generateOrganizationSchema', () => {
   it('returns organization schema with required fields', () => {
