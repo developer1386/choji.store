@@ -4,94 +4,125 @@ This guide helps AI agents understand key patterns and workflows in the Choji St
 
 ## 🏗️ Architecture Overview
 
-- **Single Page Application** built with React + TypeScript + Vite
-- **Mobile-first** design using Tailwind CSS
-- **SEO-optimized** with structured data and meta tags
-- **Privacy-focused** analytics using Umami
-- **Error tracking** via Sentry
-- **Progressive Web App** with service worker
-- **WhatsApp Integration** for order processing
-- **Accessibility-first** development with ARIA support
+- **Mobile-First SPA**: React + TypeScript + Vite for a performant single page application
+- **SEO-Optimized**: Structured data, meta tags, and semantic HTML
+- **Analytics & Tracking**: Privacy-focused Umami analytics + Sentry error tracking
+- **Progressive Web App**: Service worker with offline capabilities
+- **WhatsApp Integration**: Direct order processing via messaging
+- **High Performance**: Optimized asset loading, lazy components, and minimal re-renders
 
 ## 🔑 Key Components & Patterns
 
-### Schema Generation
-- Use `src/utils/schemaGenerators.ts` for JSON-LD structured data
-- Always validate schema data using `validators.ts` before generation
-- Examples of valid schema generation:
+### Structured Data Generation
 ```typescript
-generateProductSchema({
+// Use typed schema generators with validation
+import { generateProductSchema } from './utils/schemaGenerators';
+
+const schema = generateProductSchema({
   name: 'Premium Cat Food',
-  price: '29.99',
-  currency: 'USD',
-  availability: 'InStock'
+  priceCurrency: 'USD', // Validated ISO 4217 code
+  availability: 'https://schema.org/InStock',
+  ratingValue: '4.8'
 });
 ```
 
-### Error Handling
-- Custom error classes in `src/utils/errors.ts`
-- Always use specific error types (e.g., `InvalidUrlError`, `InvalidCurrencyError`)
-- Sentry integration for production error tracking via `src/utils/sentry.ts`
-- Implement error boundaries for React components
-- Track errors with proper context using `captureException`
-
-### Testing Patterns
-- Use Vitest for unit testing
-- Follow `*.test.ts` naming convention
-- Test files should be co-located with implementation
-- Mock external services in tests
-- Example test pattern:
+### Component Documentation
+- Use detailed JSDoc comments to document component responsibilities
+- Include key sections: Features, SEO, Accessibility, Performance
 ```typescript
-describe('Component/Util', () => {
-  it('should handle expected case', () => {
-    // Arrange
-    // Act
-    // Assert
-  });
-});
+/**
+ * Component Structure:
+ * - Features: List key capabilities
+ * - SEO: Document structured data, meta tags
+ * - Accessibility: ARIA roles, labels, contrast
+ * - Performance: Loading strategies, optimizations
+ */
 ```
 
-## 🛠️ Development Workflows
+### Error Handling Pattern
+```typescript
+import { InvalidUrlError } from './utils/errors';
+import { captureError } from './utils/sentry';
+
+try {
+  // Validate inputs with specific error types
+  if (!isValidUrl(url)) {
+    throw new InvalidUrlError(url);
+  }
+} catch (error) {
+  // Track errors with context
+  captureError(error, {
+    component: 'ComponentName',
+    action: 'ActionName'
+  });
+}
+```
+
+## 🛠️ Development Workflow
 
 ### Local Development
 ```bash
-npm install    # Install dependencies
-npm run dev    # Start dev server
-npm run test   # Run tests
+npm install     # Install dependencies
+npm run dev     # Start dev server (http://localhost:5173)
+npm test       # Run test suite
 npm run build  # Production build
 ```
 
-### Type Safety
-- Enable strict mode TypeScript
+### Key Directories
+- `src/utils/`: Core utilities and schema generation
+- `src/components/`: React components (co-located with tests)
+- `public/`: Static assets and PWA files
+- `docs/`: Technical documentation
+
+### Testing Guidelines
+- Co-locate tests with implementation (`*.test.ts`)
+- Test error cases and validation
+- Mock external services
+- Test schema generation comprehensively
+
+## 📋 Code Conventions
+
+### TypeScript Standards
+- Enable strict mode
 - Define interfaces in `src/utils/types.ts`
 - Use type inference where possible
 - Avoid `any` type
-- Utilize built-in utility types
-- Each schema type must extend base interfaces
-- Follow naming convention: `ISchemeName` for interfaces
+- Use built-in utility types
+- Follow `ISchemeName` interface naming
 
-### SEO Requirements
-- All pages require proper meta tags
-- Structured data must be validated
-- Images need descriptive alt text
-- Follow semantic HTML structure
+### Component Structure
+1. Component JSDoc with full documentation
+2. Import statements grouped by type
+3. State declarations with detailed comments
+4. Helper functions/hooks
+5. Component render logic
+6. Export statement
 
-## 🤝 Contributing Guidelines
+### Schema Generation Pattern
+1. Define interface with JSDoc
+2. Implement validator functions
+3. Create generator with validation
+4. Add comprehensive tests
 
-1. Branch from `main`
-2. Follow TypeScript strict mode
-3. Add tests for new features
-4. Validate SEO schemas
-5. Check accessibility (ARIA, contrast)
-6. Run full test suite before PR
+## 🌟 Key Files & Patterns
 
-## 📁 Critical Files
+### Core Application Files
+- `src/App.tsx`: Main component with layout and routing
+- `src/main.tsx`: Application bootstrap and initialization
+- `src/utils/schemaGenerators.ts`: SEO schema generation
+- `src/utils/validators.ts`: Data validation
+- `public/sw.js`: Service worker configuration
 
-- `src/App.tsx` - Main application component
-- `src/utils/schemaGenerators.ts` - SEO schema generation
-- `src/utils/validators.ts` - Data validation
-- `src/utils/analytics.ts` - Privacy-focused tracking
-- `src/utils/cookieConsent.ts` - GDPR-compliant cookie handling
-- `public/sw.js` - Service worker for PWA
-- `src/utils/structuredData.ts` - Core SEO data structure
-- `tsconfig.json` - TypeScript configuration
+### State Management
+- Use React hooks for local state
+- Props for component communication
+- Context for theme/preferences (if needed)
+- Avoid unnecessary global state
+
+### Performance Optimization
+- Lazy load below-the-fold images
+- Optimize asset loading order
+- Use correct image dimensions
+- Implement proper caching strategies
+
+Questions? Want to understand specific patterns or workflows better? Let me know!

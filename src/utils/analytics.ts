@@ -47,7 +47,7 @@
  * @see {@link https://docs.microsoft.com/en-us/clarity/ Microsoft Clarity Documentation}
  */
 
-import { getCLS, getFID, getFCP, getLCP, getTTFB, Metric } from 'web-vitals';
+import { getCLS, getFID, getFCP, getLCP, getTTFB, type Metric } from 'web-vitals';
 
 /**
  * Type definitions for analytics parameters
