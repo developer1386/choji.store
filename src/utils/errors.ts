@@ -70,8 +70,4 @@ export class MissingRequiredFieldError extends SchemaValidationError {
     super(`Missing required field: ${field}`);
     this.name = 'MissingRequiredFieldError';
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> main
