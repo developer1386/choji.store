@@ -52,7 +52,6 @@ import {
   InvalidAvailabilityError,
   InvalidRatingError,
   InvalidReviewCountError,
-  MissingRequiredFieldError,
 } from './errors';
 
 /**
