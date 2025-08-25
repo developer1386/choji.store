@@ -66,7 +66,7 @@
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
 
-Premium natural homemade cat food e-commerce landing page built with React, TypeScript, and Tailwind CSS. Features WhatsApp integration for seamless ordering and SEO-optimized content structure.
+Premium natural homemade cat food e-commerce landing page built with React, TypeScript, and Tailwind CSS. Features WhatsApp integration for seamless order processing and SEO-optimized content structure.
 
 ![Choji Store Preview](public/logo/logo.svg)
 
@@ -74,7 +74,7 @@ Premium natural homemade cat food e-commerce landing page built with React, Type
 
 ### Core Features
 - Modern, responsive single-page design
-- WhatsApp integration for easy order placement
+- WhatsApp integration for seamless order processing
 - Real-time order form with loading states
 - Mobile-first design approach
 - Gradient-based UI with smooth transitions
@@ -151,7 +151,7 @@ npm run dev
 - 🎨 Tailwind CSS for styling
 - 📱 Mobile-first responsive design
 - 🔍 SEO optimization with structured data
-- 💬 WhatsApp integration for orders
+- 💬 WhatsApp integration for order processing
 - 🔒 GDPR-compliant cookie consent
 - 📊 Privacy-focused analytics
 - ⚡ Lightning-fast with Vite

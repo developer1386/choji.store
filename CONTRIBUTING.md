@@ -14,13 +14,11 @@ Thank you for considering contributing to Choji Store! This document provides gu
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
 - [Development Workflow](#development-workflow)
-- [Commit Guidelines](#commit-guidelines)
+- [Commit Message Format](#commit-message-format)
 - [Pull Request Process](#pull-request-process)
 - [Coding Standards](#coding-standards)
 - [Documentation](#documentation)
 - [Getting Help](#getting-help)
-
-Thank you for considering contributing to Choji Store! This document provides comprehensive guidelines, best practices, and detailed workflows for contributing to our premium cat food e-commerce platform built with React, TypeScript, and modern web technologies.
 
 ## 📜 Code of Conduct
 
@@ -208,7 +206,7 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 |------|-------------|----------|
 | `feat:` | New features | `feat: add WhatsApp order integration` |
 | `fix:` | Bug fixes | `fix: resolve mobile navigation issue` |
-| `docs:` | Documentation changes | `docs: update API documentation` |
+| `docs:` | Documentation changes | `docs: update API documentation.` |
 | `style:` | Code style changes | `style: format with prettier` |
 | `refactor:` | Code refactoring | `refactor: optimize analytics module` |
 | `perf:` | Performance improvements | `perf: lazy load product images` |
